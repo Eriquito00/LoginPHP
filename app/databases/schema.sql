@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS articles (
     article_id      INT AUTO_INCREMENT PRIMARY KEY,
     user_id         INT NOT NULL,
     title           VARCHAR(50) NOT NULL,
-    extract         TEXT NOT NULL,
-    img             VARCHAR(255),
+    description     TEXT NOT NULL,
+    image           VARCHAR(255),
     CONSTRAINT fk_articles_users FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
