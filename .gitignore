@@ -1,0 +1,5 @@
+# Dependencias de Composer
+/vendor/
+
+# Configuración de VS Code
+.vscode/
