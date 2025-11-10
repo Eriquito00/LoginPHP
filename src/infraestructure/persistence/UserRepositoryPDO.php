@@ -1,30 +1,30 @@
 <?php
-require_once __DIR__ . "/../interfaces/UserDAO.php";
-
-class UserDAOImp implements UserDAO {
+class UserRepositoryPDO implements UserRepo {
     private $connection;
 
     public function __construct($connection) {
         $this->connection = $connection;
     }
 
-    public function getAllUsers() {
+    public function getAll() : array {
+        $a = [];
+        return $a;
         // Implementation here
     }
 
-    public function createUser($user) {
+    public function create($user) {
         // Implementation here
     }
 
-    public function updateUser($user, $newUser) {
+    public function update($user, $newUser) {
         // Implementation here
     }
 
-    public function deleteUser($id) {
+    public function delete($user) {
         // Implementation here
     }
 
-    public function getUserById($id) {
+    public function get($user) {
         // Implementation here
     }
 }

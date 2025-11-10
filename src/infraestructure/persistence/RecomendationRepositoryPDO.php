@@ -1,34 +1,34 @@
 <?php
-require_once __DIR__ . "/../interfaces/RecomendationDAO.php";
-
-class RecomendationDAOImp implements RecomendationDAO {
+class RecomendationRepositoryPDO implements RecomendationRepo {
     private $connection;
 
     public function __construct($connection) {
         $this->connection = $connection;
     }
 
-    public function createRecomendation($recomendation) {
+    public function create($recomendation) {
         // TODO: Implement createRecomendation method
     }
 
-    public function updateRecomendation($recomendation, $newRecomendation) {
+    public function update($recomendation, $newRecomendation) {
         // TODO: Implement updateRecomendation method
     }
 
-    public function deleteRecomendation($id) {
+    public function delete($id) {
         // TODO: Implement deleteRecomendation method
     }
 
-    public function getAllRecomendations() {
+    public function getAll() : array {
+        $a = [];
+        return $a;
         // TODO: Implement getAllRecomendations method
     }
 
-    public function getRecomendationById($id) {
+    public function get($id) {
         // TODO: Implement getRecomendationById method
     }
 
-    public function getRecomendationsPaginated($page, $limit) {
+    public function getPaginated($page, $limit) {
         // TODO: Implement getRecomendationsPaginated method
     }
 }
