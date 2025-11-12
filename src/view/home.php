@@ -1,4 +1,3 @@
-<?php require_once __DIR__ . "/../services/api/WikipediaAPIClient.php"; ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,8 +8,5 @@
 </head>
 <body>
     <h1>Phpero</h1>
-    <?php $phpinfo = getWikipediaArticle("PHP"); ?>
-    <p><?= $phpinfo['extract']; ?></p>
-    <img src="<?= $phpinfo['thumbnail']['source']; ?>" alt="PHP Thumbnail">
 </body>
 </html>

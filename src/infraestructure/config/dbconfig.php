@@ -8,6 +8,6 @@ return [
     "DBUSER" => "root",
     "DBPASSWORD" => "",
     "DBNAME" => "mardb",
-    "DBSCHEMA" => __DIR__ . "\..\databases\schema.sql"
+    "DBSCHEMA" => "\schema.sql"
 ];
 ?>

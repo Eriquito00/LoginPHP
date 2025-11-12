@@ -1,3 +1,3 @@
 <?php
-include_once __DIR__ . "/../views/home.php";
+include_once __DIR__ . "/../view/login.php";
 ?>
