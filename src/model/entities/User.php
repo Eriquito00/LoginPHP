@@ -5,8 +5,17 @@ class User {
     private string $email;
     private string $passwordHash;
 
+    /**
+     * Constructor vacio para PDO::FETCH_CLASS
+     */
     public function __construct() {}
 
+
+    /**
+     * @param array $data ARRAY ASSOC con los datos
+     * 
+     * @return void
+     */
     public function hydrate(array $data) : void {
         foreach ($data as $k => $v) {
             if(property_exists($this, $k)) {
@@ -15,7 +24,17 @@ class User {
         }
     }
 
-    public function init(int $id, string $username, string $email, string $passwordHash = '') {
+
+    /**
+     * Funcion para hidratar el objeto como si fuera un constructor parametrizado
+     * @param int $id
+     * @param string $username
+     * @param string $email
+     * @param string $passwordHash
+     * 
+     * @return void
+     */
+    public function init(int $id, string $username, string $email, string $passwordHash = '') : void {
         $this->id = $id;
         $this->username = $username;
         $this->email = $email;

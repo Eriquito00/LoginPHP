@@ -6,8 +6,17 @@ class Recomendation {
     private string $description;
     private string $imageUrl;
 
+    /**
+     * Constructor vacio para PDO::FETCH_CLASS
+     */
     public function __construct() {}
 
+
+    /**
+     * @param array $data ARRAY ASSOC con los datos
+     * 
+     * @return void
+     */
     public function hydrate(array $data) : void {
         foreach ($data as $k => $v) {
             if(property_exists($this, $k)) {
@@ -16,6 +25,17 @@ class Recomendation {
         }
     }
 
+    
+    /**
+     * Funcion para hidratar el objeto como un constructor parametrizado
+     * @param int $id
+     * @param int $user_id
+     * @param string $title
+     * @param string $description
+     * @param string $imageUrl
+     * 
+     * @return void
+     */
     public function init(int $id, int $user_id, string $title, string $description, string $imageUrl) : void {
         $this->id = $id;
         $this->user_id = $user_id;
