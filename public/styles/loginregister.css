@@ -1,0 +1,42 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: system-ui;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    min-width: 500px;
+    text-align: center;
+    gap: 20px;
+    padding: 25px;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 0px 2px white;
+}
+
+label {
+    text-align: justify;
+}
+
+input, button {
+    height: 30px;
+    font-size: 1.25rem;
+    border-radius: 10px;
+    border: 2px solid black;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button {
+    margin-top: 30px;
+    height: 50px;
+}
