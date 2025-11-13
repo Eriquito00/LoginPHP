@@ -1,4 +1,6 @@
-<?php 
+<?php
+namespace App\Model\Repository;
+
 /**
  * @extends Repository<User>
  */

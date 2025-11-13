@@ -1,4 +1,9 @@
 <?php
+
+namespace App\Infraestructure\Persistence;
+
+use App\Model\Repository\UserRepo;
+
 class UserRepositoryPDO implements UserRepo {
     private $connection;
 
