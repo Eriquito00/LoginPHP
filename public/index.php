@@ -1,8 +1,14 @@
 <?php
-require_once __DIR__ . "/../app/databases/connections/connection.php";
-$dbInfo = require_once __DIR__ . "/../app/config/dbconfig.php";
 
-$dbConnection = createConnection($dbInfo["DBHOST"], $dbInfo["DBUSER"], $dbInfo["DBPASSWORD"], $dbInfo["DBNAME"], $dbInfo["DBSCHEMA"]);
+require_once __DIR__ . "/../vendor/autoload.php";
 
-require_once __DIR__ . "/../app/controllers/controller.php";
+use Dotenv\Dotenv;
+use App\Infraestructure\Routes\Router;
+
+
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+
+Router::dispatch();
+
 ?>
