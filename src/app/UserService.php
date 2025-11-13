@@ -1,6 +1,6 @@
 <?php
     function checkEmail($email){
-        $regex = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/";
+        $regex = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,5}$/";
         $email = trim($email, " ");
 
         if (strlen($email) > 255) return false;
@@ -11,7 +11,7 @@
     }
 
     function checkPassword($password){
-        $regex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/";
+        $regex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8}$/";
         $password = trim($password, " ");
 
         return preg_match($regex, $password);
