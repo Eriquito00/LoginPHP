@@ -1,4 +1,9 @@
 <?php
+
+namespace App\Infraestructure\Persistence;
+
+use App\model\repository\RecomendationRepo;
+
 class RecomendationRepositoryPDO implements RecomendationRepo {
     private $connection;
 

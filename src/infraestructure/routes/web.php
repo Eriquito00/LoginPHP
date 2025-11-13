@@ -1,0 +1,3 @@
+<?php 
+// FUTURAS RUTAS
+?>
