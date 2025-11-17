@@ -8,18 +8,18 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
 </head>
 <body>
-    <form method="POST" action="../controller/login_controller.php">
+    <form method="POST" action="login">
         <h1>Login</h1>
         <div>
             <label for="email">Email</label>
-            <input id="email" type="email" placeholder="Introduce tu email">
+            <input name="email" type="email" placeholder="Introduce tu email" required>
         </div>
 
         <div>
             <label for="email">Contraseña</label>
-            <input id="passwd" type="password" placeholder="Introduce tu contraseña">
+            <input name="password" type="password" minlength="8" placeholder="Introduce tu contraseña" required>
         </div>
-        <button id="send" type="submit">Login</button>
+        <button type="submit">Login</button>
     </form>
 </body>
 </html>

@@ -8,24 +8,24 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
 </head>
 <body>
-    <form method="POST" action="../controller/register_controller.php">
+    <form method="POST" action="register">
         <h1>Register</h1>
         <div>
             <label for="email">Email</label>
-            <input id="email" type="email">
+            <input name="email" type="email" placeholder="Introduce tu email" required>
         </div>
 
         <div>
             <label for="email">Contraseña</label>
-            <input id="passwd" type="password">
+            <input name="password" type="password" minlength="8" placeholder="Introduce tu contraseña" required>
         </div>
 
         <div>
             <label for="email">Repite la contraseña</label>
-            <input id="repeat_passwd" type="password">
+            <input name="repeat_password" type="password" placeholder="Repite tu contraseña" minlength="8" required>
         </div>
 
-        <button id="send" type="submit">Register</button>
+        <button type="submit">Register</button>
     </form>
 </body>
 </html>

@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
 </head>
 <body>
-    <h1>Phpero</h1>
+    <h1>PHProgramando</h1>
+    <nav>
+        <ul>
+            <li><a href=""><button>Home</button></a></li>
+            <li><a href="login"><button>Login</button></a></li>
+            <li><a href="register"><button>Register</button></a></li>
+        </ul>
+    </nav>
 </body>
 </html>
