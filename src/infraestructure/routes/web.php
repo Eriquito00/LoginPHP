@@ -1,6 +1,6 @@
 <?php
 
-use App\infraestructure\routes\Router;
+use App\Infraestructure\Routes\Router;
 
 use App\Controller\HomeController;
 use App\Controller\LoginController;

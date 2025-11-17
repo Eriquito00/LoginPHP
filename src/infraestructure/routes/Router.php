@@ -39,6 +39,7 @@ class Router {
                 //con funcion anonima
                 if (is_callable($callback)){
                     $response = $callback(...$params);
+                    echo $response;
                 }
 
                 if (is_array($callback)){
@@ -46,8 +47,6 @@ class Router {
                     $response = $controller->{$callback[1]}(...$params);
                 }
 
-                //con funcion anonima
-                echo $response;
                 break;
             }
         }
