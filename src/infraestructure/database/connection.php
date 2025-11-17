@@ -13,7 +13,7 @@ function createConnection($host, $user, $password, $dbName, $schema){
     $tempCon = new PDO("mysql:host=$host;charset=utf8", $user, $password);
     $tempCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $tempCon->exec(file_get_contents($schema));
+    $tempCon->exec(file_get_contents(__DIR__ . $schema));
 
     $con = new PDO("mysql:host=$host;dbname=$dbName;charset=utf8", $user, $password);
     $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
