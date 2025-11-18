@@ -11,9 +11,10 @@
     <h1>PHProgramando</h1>
     <nav>
         <ul>
-            <li><a href=""><button>Home</button></a></li>
+            <li><a href="homepage"><button>Home</button></a></li>
             <li><a href="login"><button>Login</button></a></li>
             <li><a href="register"><button>Register</button></a></li>
+            <li><a href="profile"><button>Profile</button></a></li>
         </ul>
     </nav>
 </body>
