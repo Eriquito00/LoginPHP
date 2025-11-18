@@ -1,0 +1,18 @@
+h1 {
+    text-align: center;
+}
+
+nav {
+    display: flex;
+}
+
+ul {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+button {
+    min-width: 100px;
+}
