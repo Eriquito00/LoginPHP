@@ -7,11 +7,12 @@ class RegisterController {
     }
 
     public function getData(){
+        $username = $_POST["username"] ?? null;
         $email = $_POST['email'] ?? null;
         $password = $_POST['password'] ?? null;
         $repeat_password = $_POST['repeat_password'] ?? null;
 
-        echo $email . " " . $password . " " . $repeat_password;
+        echo $username . " " . $email . " " . $password . " " . $repeat_password;
     }
 }
 ?>
