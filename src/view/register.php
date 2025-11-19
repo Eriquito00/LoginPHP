@@ -11,11 +11,6 @@
     <form method="POST" action="register">
         <h1>Register</h1>
         <div>
-            <label for="username">Username</label>
-            <input name="username" type="text" placeholder="Introduce tu username" required>
-        </div>
-
-        <div>
             <label for="email">Email</label>
             <input name="email" type="email" placeholder="Introduce tu email" required>
         </div>
