@@ -27,23 +27,23 @@ class ProfileController {
         }
     }
 
-    public function getUsername(){
+    private function getUsername(){
         $username = $_POST["username"] ?? null;
         echo $username;
     }
 
-    public function verifyEmail(){
+    private function verifyEmail(){
         $email = $_POST["email"] ?? null;
         echo $email;
     }
 
-    public function getNewEmail(){
+    private function getNewEmail(){
         $email = $_POST["email"] ?? null;
         $newEmail = $_POST["newEmail"] ?? null;
         echo $email . " " . $newEmail;
     }
 
-    public function getNewPassword(){
+    private function getNewPassword(){
         $password = $_POST["password"] ?? null;
         $newPassword = $_POST["newPassword"] ?? null;
         echo $password . " " . $newPassword;

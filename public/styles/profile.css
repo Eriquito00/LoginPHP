@@ -58,6 +58,24 @@ p {
 }
 
 .div-1 .btn-form {
-    width: 125px;
+    max-width: 125px;
     margin-bottom: 0;
+}
+
+@media (max-width: 1500px) {
+    section {
+        width: 60%;
+    }
+}
+
+@media (max-width: 1200px) {
+    section {
+        width: 70%;
+    }
+}
+
+@media (max-width: 1000px) {
+    section {
+        width: 80%;
+    }
 }
