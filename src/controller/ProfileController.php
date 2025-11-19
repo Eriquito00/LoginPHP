@@ -27,6 +27,10 @@ class ProfileController {
         }
     }
 
+    public function userSetup(){
+        $username = $_POST["username"] ?? null;
+    }
+
     private function getUsername(){
         $username = $_POST["username"] ?? null;
         echo $username;

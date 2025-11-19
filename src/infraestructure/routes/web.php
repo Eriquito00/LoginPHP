@@ -18,4 +18,6 @@ Router::post("/register", [RegisterController::class, "getData"]);
 Router::get("/profile", [ProfileController::class, "index"]);
 Router::post("/profile", [ProfileController::class, "getData"]);
 
+Router::post("/profile/setup", [ProfileController::class, "userSetup"]);
+
 ?>

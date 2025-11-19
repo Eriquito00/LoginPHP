@@ -12,7 +12,7 @@ class RegisterController {
         $password = $_POST['password'] ?? null;
         $repeat_password = $_POST['repeat_password'] ?? null;
 
-        echo $username . " " . $email . " " . $password . " " . $repeat_password;
+        require_once(__DIR__ . "/../view/profile_setup.php");
     }
 }
 ?>
