@@ -16,6 +16,7 @@
             <li><a href="login"><button>Login</button></a></li>
             <li><a href="register"><button>Register</button></a></li>
             <li><a href="profile"><button>Profile</button></a></li>
+            <li><a href="profile/settings"><button>Profile/Settings</button></a></li>
         </ul>
     </nav>
 </body>
