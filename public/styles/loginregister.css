@@ -9,12 +9,15 @@ body {
     font-family: system-ui;
 }
 
+h1 {
+    font-size: 1.5rem;
+}
+
 form {
     display: flex;
     flex-direction: column;
-    min-width: 500px;
+    min-width: 400px;
     text-align: center;
-    gap: 20px;
     padding: 25px;
     color: white;
     border-radius: 10px;
@@ -37,6 +40,14 @@ input, button {
 }
 
 button {
-    margin-top: 30px;
+    margin-top: 10px;
     height: 50px;
+}
+
+label, input, button[type="submit"] {
+    font-size: 0.7rem;
+}
+
+input, button {
+    max-height: 50px;
 }

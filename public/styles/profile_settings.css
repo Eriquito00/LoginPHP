@@ -13,6 +13,27 @@ section {
     justify-self: center;
 }
 
+.div_img_profile {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    margin-bottom: 50px;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.img_profile {
+    text-align: center;
+}
+
+.img_profile {
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 100%;
+    min-height: 150px;
+    max-height: 200px;
+}
+
 .div-structure {
     display: grid;
     align-items: end;

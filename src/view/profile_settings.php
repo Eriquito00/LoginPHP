@@ -22,9 +22,16 @@
     </nav>
     <section>
         <form method="POST" action="profile/settings">
-            <label for="image">Foto de perfil</label>
-            <input name="image" type="file">
-            <button class="btn-form" type="submit">Aplicar</button>
+            <div class="div_img_profile">
+                <div class="img_profile">
+                    <img class="img_profile" src="./assets/moai.jpg" alt="Foto de perfil">
+                    <label for="image">Foto de perfil</label>
+                </div>
+                <div>
+                    <input name="image" type="file">
+                    <button class="btn-form" type="submit">Aplicar</button>
+                </div>
+            </div>
             <input type="hidden" name="action" value="changePhoto">
         </form>
 
