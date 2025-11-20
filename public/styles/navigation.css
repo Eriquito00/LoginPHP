@@ -12,3 +12,21 @@ ul {
 button {
     min-width: 100px;
 }
+
+@media (max-width: 1500px) {
+    button {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 1000px) {
+    button {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 700px) {
+    button {
+        min-width: 75px;
+    }
+}
