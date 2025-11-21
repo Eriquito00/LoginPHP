@@ -17,6 +17,7 @@
             <li><a href="register"><button>Register</button></a></li>
             <li><a href="profile"><button>Profile</button></a></li>
             <li><a href="profile/settings"><button>Profile/Settings</button></a></li>
+            <li><a href="profile/create"><button>Create Reco</button></a></li>
         </ul>
     </nav>
 </body>

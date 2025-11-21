@@ -9,6 +9,8 @@ class ProfileController {
     public function userSetup(){
         $username = $_POST["username"] ?? null;
         echo $username;
+        
+        require_once(__DIR__ . "/../view/profile.php");
     }
 }
 
