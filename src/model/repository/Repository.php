@@ -3,7 +3,7 @@
 namespace App\Model\Repository;
 
 /**
- * @template T of object
+ * @template T
  */
 interface Repository {
     /**
@@ -24,11 +24,6 @@ interface Repository {
      * @return void
      */
     public function delete($entity);
-
-    /**
-     * @return array
-     */
-    public function getAll() : array;
 
     /**
      * @param T $entity
