@@ -44,10 +44,33 @@ button {
     height: 50px;
 }
 
-label, input, button[type="submit"] {
+label, input, button[type="submit"], a {
     font-size: 0.7rem;
 }
 
 input, button {
     max-height: 50px;
+}
+
+.div_rem_passwd {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.rembember {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.forgot_passwd {
+    margin-left: auto;
+    text-align: right;
+}
+
+.g-recaptcha {
+    transform: scale(0.7);
+    transform-origin: left;
 }
