@@ -1,8 +1,11 @@
 <?php
+namespace App\Model\Entities;
+
 class User {
     private int $id;
     private string $username;
     private string $email;
+    private string $role;
     private string $passwordHash;
 
     /**
@@ -30,13 +33,15 @@ class User {
      * @param int $id
      * @param string $username
      * @param string $email
+     * @param string $role
      * @param string $passwordHash
      * 
      * @return void
      */
-    public function init(int $id, string $username, string $email, string $passwordHash = '') : void {
+    public function init(int $id, string $username, string $email, string $role = "user",string $passwordHash = '') : void {
         $this->id = $id;
         $this->username = $username;
+        $this->role = $role;
         $this->email = $email;
         if ($passwordHash !== '') {
             $this->passwordHash = $passwordHash;
@@ -62,6 +67,10 @@ class User {
 
     public function getEmail() { 
         return $this->email;
+    }
+
+    public function getRole() {
+        return $this->role;
     }
 
     public function getPasswordHash() {

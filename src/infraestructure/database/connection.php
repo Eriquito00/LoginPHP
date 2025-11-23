@@ -1,22 +1,53 @@
 <?php
-/**
- * Crea una conexion con la base de datos
- *
- * @param [type] $host      Host al que se establece
- * @param [type] $user      Usuario para crear la db si no existe
- * @param [type] $password  Contraseña del usuario
- * @param [type] $dbName    Nombre de la db
- * @param [type] $schema    Ruta al fichero del schema.sql (desde este archivo al schema.sql)
- * @return void             Conexion de la db para empezar a darle duro
- */
-function createConnection($host, $user, $password, $dbName, $schema){
-    $tempCon = new PDO("mysql:host=$host;charset=utf8", $user, $password);
-    $tempCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+namespace App\Infraestructure\Database;
 
-    $tempCon->exec(file_get_contents(__DIR__ . $schema));
+use PDO;
+use Exception;
+use App\Infraestructure\Exceptions\DBErrorException;
 
-    $con = new PDO("mysql:host=$host;dbname=$dbName;charset=utf8", $user, $password);
-    $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    return $con;
+// TODO MIGRAR A DOTENV
+
+class Connection {
+    private $pdo;
+
+    public function __construct(array $conf) {
+        try{
+            $dsn = sprintf('mysql:host=%s;port=%d;dbname=%s;charset=%s',
+                $conf['host'], $conf['port'], $conf['name'], $conf['charset']
+            );
+            $this->pdo = new PDO($dsn, $conf['user'], $conf['pass'], [
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES   => false,
+            ]);
+
+        } catch (Exception $e) {
+            throw new DBErrorException("Conexion a la BBDD fallida");
+        }
+    }
+
+    public function getConnection() : PDO {
+        return $this->pdo;
+    }
+
+    public function close() : void {
+        $this->pdo = null;
+    }
+
+    public function connect(array $conf) {
+        try{
+            $dsn = sprintf('mysql:host=%s;port=%d;dbname=%s;charset=%s',
+                $conf['host'], $conf['port'], $conf['name'], $conf['charset']
+            );
+            $this->pdo = new PDO($dsn, $conf['user'], $conf['pass'], [
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES   => false,
+            ]);
+
+        } catch (Exception $e) {
+            throw new DBErrorException("Conexion a la BBDD fallida");
+        }
+    }
 }
 ?>

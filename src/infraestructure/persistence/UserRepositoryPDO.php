@@ -2,12 +2,16 @@
 
 namespace App\Infraestructure\Persistence;
 
+use App\Infraestructure\Database\Connection;
 use App\Model\Repository\UserRepo;
 
+/**
+ * WIP: To be implemented
+ */
 class UserRepositoryPDO implements UserRepo {
-    private $connection;
+    private Connection $connection;
 
-    public function __construct($connection) {
+    public function __construct(Connection $connection) {
         $this->connection = $connection;
     }
 
