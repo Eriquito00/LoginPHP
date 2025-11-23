@@ -2,39 +2,187 @@
 
 namespace App\Infraestructure\Persistence;
 
-use App\model\repository\RecomendationRepo;
+use App\Model\Entities\Recomendation;
+use App\Model\Repository\RecomendationRepo;
+use App\Infraestructure\Database\Connection;
+use App\Infraestructure\Exceptions\DataConflictException;
+use App\Infraestructure\Exceptions\DBErrorException;
+use App\Model\Entities\CriteriaRecomendation;
+use App\Model\Entities\Pagination;
+use PDO;
+use PDOException;
 
+/** @implements RecomendationRepo */
 class RecomendationRepositoryPDO implements RecomendationRepo {
-    private $connection;
+    private Connection $connection;
 
-    public function __construct($connection) {
+    public function __construct(Connection $connection) {
         $this->connection = $connection;
     }
 
+    /**
+     * @param Recomendation $recomendation
+     * @throws DBErrorException
+     */
     public function create($recomendation) {
-        // TODO: Implement createRecomendation method
+        try {
+            $pdo = $this->connection->getConnection();
+
+            $stmt = $pdo->prepare("
+                INSERT INTO recomendations(user_id, title, description)
+                    VALUES(:user_id, :title, :descrition);
+            ");
+
+            // PODRIAMOS DEVOLVER LA ID DEL ULTIMO CREADO
+
+            $stmt->execute([
+                ':user_id' => $recomendation->getUserId(),
+                ':title' => $recomendation->getTitle(),
+                ':description' => $recomendation->getDescription()
+            ]);
+        } catch (PDOException $e) {
+            throw new DBErrorException("Internal Server Error: " . $e->getMessage());
+        }
     }
 
-    public function update($recomendation, $newRecomendation) {
-        // TODO: Implement updateRecomendation method
+    /**
+     * @param Recomendation $oldRecomendation
+     * @param Recomendation $newRecomendation
+     * 
+     * @throws DBErrorException|DataConflictException
+     */
+    public function update($oldRecomendation, $newRecomendation) {
+        try {
+            if ($oldRecomendation->getId() == 0) throw new DataConflictException("Recomendation ID invalid");
+            if ($oldRecomendation->getUserId() != $newRecomendation->getUserId()) throw new DataConflictException("User_Id must be the same");
+
+            $pdo = $this->connection->getConnection();
+
+            $stmt = $pdo->prepare("
+                UPDATE TABLE recomendations
+                    SET title = :title, description = :description
+                WHERE id = :id;
+            ");
+
+            $stmt->execute([
+                ':title' => $newRecomendation->getTitle(),
+                ':description' => $newRecomendation->getDescription(),
+                ':id' => $oldRecomendation->getId()
+            ]);
+        } catch (PDOException|DataConflictException $e) {
+            if ($e instanceof PDOException) {
+                throw new DBErrorException("Internal Server Error: " . $e->getMessage());
+            }
+            throw $e;
+        }
     }
 
-    public function delete($id) {
-        // TODO: Implement deleteRecomendation method
+    /**
+     * @param Recomendation $recomendation
+     */
+    public function delete($recomendation) {
+        try {
+            $pdo = $this->connection->getConnection();
+
+            $stmt = $pdo->prepare("
+                DELETE FROM TABLE recomendations WHERE id = :id
+            ");
+
+            $stmt->execute([
+                ":id" => $recomendation->getId()
+            ]);
+        } catch (PDOException $e) {
+            throw new DBErrorException("Internal Server Error: " . $e->getMessage());
+        }
     }
 
-    public function getAll() : array {
-        $a = [];
-        return $a;
-        // TODO: Implement getAllRecomendations method
+    /**
+     * @param Recomendation $recomendation reference of a recomendation
+     * @return Recomendation|null
+     */
+    public function get($recomendation) {
+        try {
+            $pdo = $this->connection->getConnection();
+
+            $stmt = $pdo->prepare("
+                SELECT * FROM recomendations
+                WHERE id = :id
+            ");
+
+            $stmt->execute([
+                ":id" => $recomendation->getId()
+            ]);
+            return $stmt->fetchObject(Recomendation::class);
+        } catch (PDOException $e) {
+            throw new DBErrorException("Internal Server Error: " . $e->getMessage());
+        }
+    }
+    
+    /**
+     * @param CriteriaRecomendation $criteria
+     * 
+     * @return Pagination pagina con los resultados siguiendo la criteria
+     */
+    public function getPaginated(CriteriaRecomendation $criteria) : Pagination {
+        $pdo = $this->connection->getConnection();
+        [$whereSql, $params] = $this->buildWhere($criteria);
+
+        $sqlCount = "SELECT COUNT(*) AS total FROM recomendations r $whereSql";
+        
+        $stmt = $pdo->prepare($sqlCount);
+        $stmt->execute($params);
+        $resultSet = $stmt->fetch(PDO::FETCH_ASSOC); // ESTO DEBERIA (POR FAVOR QUE SEA ASI) DEVOLVER UN ARRAY ASSOC CON UN CAMPO llamado total => $total de items
+
+        // AQUI AHORA COMPRUEBO SI ES VALIDO EL OFFSET, SI NO, A LA MIELDA A LA ULTIMA
+        $totalPages = intval(ceil($resultSet["total"] / $criteria->getSize()));
+
+        if ($criteria->getPage() > $totalPages) {
+            $offset = ($totalPages - 1) * $criteria->getSize();
+            $criteria->setPage($totalPages);
+        }
+        $offset = ($criteria->getPage() - 1) * $criteria->getSize();
+
+        $sqlPagination = "SELECT * FROM recomendations r $whereSql ORDER BY {$criteria->getOrden()} {$criteria->getSentido()} LIMIT :page_size OFFSET :offset";
+
+        $params[":page_size"] = $criteria->getSize();
+        $params[":offset"] = $offset;
+
+        $stmt->execute([$params]);
+
+        $items = $stmt->fetchAll(PDO::FETCH_CLASS, Recomendation::class);
+
+        return new Pagination(
+            $items,
+            $criteria->getPage(),
+            $offset + $criteria->getSize() < $resultSet["total"],
+            $criteria->getPage() != 1,
+            $totalPages,
+            $resultSet["total"]
+        );
+
     }
 
-    public function get($id) {
-        // TODO: Implement getRecomendationById method
+    public function getUserId($recomendation): int
+    {   
+        // TODO: Implement this method for geting the uid of a recomendation in the db
+        throw new \Exception('Not implemented');
     }
 
-    public function getPaginated($page, $limit) {
-        // TODO: Implement getRecomendationsPaginated method
+    private function buildWhere(CriteriaRecomendation $criteria) : array {
+        $conds = [];
+        $params = [];
+
+        if (!empty($criteria->getUsername())) {
+            array_push($conds, "r.user_id LIKE :username");
+            $params[":username"] = "%{$criteria->getUsername()}%";
+        }
+
+        $whereSql = "";
+        if ($conds) {
+            $whereSql = "WHERE " . implode(" AND ", $conds);
+        }
+
+        return [$whereSql, $params];
     }
 }
 ?>

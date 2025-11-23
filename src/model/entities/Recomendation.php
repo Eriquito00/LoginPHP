@@ -1,10 +1,13 @@
 <?php
+namespace App\Model\Entities;
+
 class Recomendation {
     private int $id;
     private int $user_id;
     private string $title;
     private string $description;
     private string $imageUrl;
+    private string $createdAt;
 
     /**
      * Constructor vacio para PDO::FETCH_CLASS
@@ -36,13 +39,16 @@ class Recomendation {
      * 
      * @return void
      */
-    public function init(int $id, int $user_id, string $title, string $description, string $imageUrl) : void {
+    public function init(int $user_id, string $title, string $description, string $imageUrl = '', int $id = 0) : void {
         $this->id = $id;
         $this->user_id = $user_id;
         $this->title = $title;
         $this->description = $description;
         $this->imageUrl = $imageUrl;
+        $this->createdAt = "";
     }
+
+
 
     public function getId() : int  { 
         return $this->id; 
@@ -64,13 +70,18 @@ class Recomendation {
         return $this->imageUrl; 
     }
 
+    public function getCreatedAt() : string {
+        return $this->createdAt;
+    }
+
     public function __toString() {
         return "{
                     id: {$this->id},
                     userId: {$this->user_id},
                     title: {$this->title},
                     description: {$this->description},
-                    ImageUrl: {$this->imageUrl}
+                    ImageUrl: {$this->imageUrl},
+                    created_at: {$this->createdAt}
                 }";
     }
 }
