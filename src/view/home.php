@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Con ♥️ y PHP</title>
+    <base href="/LoginPHP/public/">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <link rel="stylesheet" href="./styles/navigation.css">
     <link rel="stylesheet" href="./styles/style.css">
@@ -18,6 +19,8 @@
             <li><a href="profile"><button>Profile</button></a></li>
             <li><a href="profile/settings"><button>Profile/Settings</button></a></li>
             <li><a href="profile/create"><button>Create Reco</button></a></li>
+            <li><a href="login/forgot-password"><button>Passoword</button></a></li>
+            <li><a href="admin/users"><button>Admin Users</button></a></li>
         </ul>
     </nav>
 </body>
