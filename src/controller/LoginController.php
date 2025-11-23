@@ -22,7 +22,7 @@ class LoginController {
         $email = $_POST["email"] ?? null;
         
         if (!empty($email)){
-            $this->index();
+            echo $email;
         }
         else include_once(__DIR__ . "/../view/login_forgot_password_data.php");
     }

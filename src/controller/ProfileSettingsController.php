@@ -27,6 +27,27 @@ class ProfileSettingsController {
         }
     }
 
+    public function indexForgotPassword(){
+        require_once(__DIR__ . "/../view/login_forgot_password.php");
+    }
+
+    public function setNewPassword(){
+        $passwd = $_POST["password"] ?? null;
+        $repeatPasswd = $_POST["repeat_password"] ?? null;
+
+        echo $passwd . " " . $repeatPasswd;
+
+        /**
+         * Aqui obtendriamos la contraseña y la repetida pero claro
+         * el correo tiene que ir en el token temporal que se ha enviado
+         * al correo asi que a ese sera el correo al que se le cambie
+         * la contraseña, una vez eso se puede:
+         * 1. Cerrar la ventana
+         * 2. Dejarla invalida con un mensaje de si se ha canviado o no y punto
+         * 3. Enviarlo al login
+         */
+    }
+
     private function getUsername(){
         $username = $_POST["username"] ?? null;
         echo $username;
