@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recuperacion de contraseña</title>
-    <base href="/LoginPHP/public/">
+    <base href="<?= BASE_URL ?>">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <link rel="stylesheet" href="./styles/login_forgot_password_data.css">
 </head>
