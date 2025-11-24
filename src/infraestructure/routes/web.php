@@ -12,6 +12,8 @@ use App\Controller\AdminController;
 
 Router::get("/", [HomeController::class, "index"]);
 
+Router::post("/feed", [HomeController::class, "showFeed"]);
+
 Router::get("/login", [LoginController::class, "index"]);
 Router::post("/login", [LoginController::class, "getData"]);
 

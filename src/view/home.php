@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <link rel="stylesheet" href="./styles/navigation.css">
     <link rel="stylesheet" href="./styles/style.css">
+    <script defer src="./js/PaginationData.js"></script>
 </head>
 <body>
     <h1>PHProgramando</h1>
@@ -23,5 +24,14 @@
             <li><a href="admin/users"><button>Admin Users</button></a></li>
         </ul>
     </nav>
+    <div id="lista-posts">
+        <?php require_once(__DIR__ . "/home/_feed.php") ?>
+    </div>
+    <footer>
+        <select id="sentido">
+            <option value="asc">ASC</option>
+            <option value="desc" selected>DESC</option>
+        </select>
+    </footer>
 </body>
 </html>
