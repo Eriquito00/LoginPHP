@@ -1,0 +1,67 @@
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+label {
+    font-size: 1rem;
+}
+
+.div-image, .div-username, .div-button {
+    width: 20%;
+}
+
+.div-image {
+    text-align: center;
+}
+
+img {
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 100%;
+    min-height: 150px;
+    max-height: 250px;
+}
+
+.div-username label, .div-username input, .div-button button {
+    font-size: 0.8rem;
+}
+
+.div-username input, .div-button button {
+    height: 50px;
+}
+
+.div-button button {
+    line-height: 0;
+}
+
+@media (max-width: 1500px) {
+    .div-image, .div-username, .div-button {
+        width: 30%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .div-image, .div-username, .div-button {
+        width: 40%;
+    }
+}
+
+@media (max-width: 1000px) {
+    .div-image, .div-username, .div-button {
+        width: 50%;
+    }
+}
+
+@media (max-width: 800px) {
+    .div-image, .div-username, .div-button {
+        width: 70%;
+    }
+}
