@@ -27,7 +27,7 @@
             <input name="repeat_password" type="password" placeholder="Repite tu contraseña" minlength="8" required>
         </div>
 
-        <div class="g-recaptcha" data-sitekey="6LdjOxYsAAAAAFzoC9NkkYTopb0zk5_C2jKdoVuO"></div>
+        <div class="g-recaptcha" data-sitekey="<?= $_ENV["RECAPTCHA_SITE_KEY"] ?>"></div>
 
         <button type="submit">Register</button>
     </form>

@@ -10,7 +10,7 @@ class Recaptcha {
     public function __construct($ip, $captcha) {
         $this->ip = $ip;
         $this->captcha = $captcha;
-        $this->secret = "LA CLAVE DEL RECAPTCHA SECRETA (NO VOLVER A FILTRAR)";
+        $this->secret = $_ENV["RECAPTCHA_PRIVATE_KEY"];
     }
 
     public function verifyRecaptcha(){

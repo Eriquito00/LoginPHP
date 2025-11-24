@@ -29,7 +29,7 @@
             <a class="forgot_passwd" href="login/forgot-password-data">Has olvidado la contraseña?</a>
         </div>
 
-        <div class="g-recaptcha" data-sitekey="6LdjOxYsAAAAAFzoC9NkkYTopb0zk5_C2jKdoVuO"></div>
+        <div class="g-recaptcha" data-sitekey="<?= $_ENV["RECAPTCHA_SITE_KEY"] ?>"></div>
 
         <button type="submit">Login</button>
     </form>

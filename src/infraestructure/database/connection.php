@@ -10,12 +10,12 @@ use App\Infraestructure\Exceptions\DBErrorException;
 class Connection {
     private $pdo;
 
-    public function __construct(array $conf) {
+    public function __construct() {
         try{
             $dsn = sprintf('mysql:host=%s;port=%d;dbname=%s;charset=%s',
-                $conf['host'], $conf['port'], $conf['name'], $conf['charset']
+                $_ENV["MYSQL_HOST"], $_ENV["MYSQL_PORT"], $_ENV["MYSQL_DBNAME"], $_ENV["MYSQL_CHARSET"]
             );
-            $this->pdo = new PDO($dsn, $conf['user'], $conf['pass'], [
+            $this->pdo = new PDO($dsn, $_ENV["MYSQL_USER"], $_ENV["MYSQL_PASSWORD"], [
                 PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES   => false,
@@ -34,12 +34,12 @@ class Connection {
         $this->pdo = null;
     }
 
-    public function connect(array $conf) {
+    public function connect() {
         try{
             $dsn = sprintf('mysql:host=%s;port=%d;dbname=%s;charset=%s',
-                $conf['host'], $conf['port'], $conf['name'], $conf['charset']
+                $_ENV["MYSQL_HOST"], $_ENV["MYSQL_PORT"], $_ENV["MYSQL_DBNAME"], $_ENV["MYSQL_CHARSET"]
             );
-            $this->pdo = new PDO($dsn, $conf['user'], $conf['pass'], [
+            $this->pdo = new PDO($dsn, $_ENV["MYSQL_USER"], $_ENV["MYSQL_PASSWORD"], [
                 PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES   => false,
