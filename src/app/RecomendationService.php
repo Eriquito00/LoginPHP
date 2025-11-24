@@ -1,0 +1,70 @@
+<?php
+
+namespace App\Application;
+
+use App\Infraestructure\Database\Connection;
+use App\Infraestructure\Persistence\RecomendationRepositoryPDO;
+use Exception;
+use App\Application\Exceptions\LimitExceededException;
+use App\Application\Exceptions\UserNotExistsException;
+use App\Application\Exceptions\WrongUserIdException;
+use App\Infraestructure\Persistence\UserRepositoryPDO;
+use App\Model\Entities\Recomendation;
+
+class RecomendationService {
+    private RecomendationRepositoryPDO $dao;
+    private UserRepositoryPDO $userdao;
+    private Connection $con;
+
+    public function __construct(RecomendationRepositoryPDO $dao, UserRepositoryPDO $userdao, Connection $con){
+        $this->dao = $dao;
+        $this->userdao = $userdao;
+        $this->con = $con;
+    }
+
+    public function post($userid, $title, $text){
+        if (!strlen($title) <= 50 && !strlen($text) <= 2000){
+            $superado = !strlen($title) <= 50 ? "title" : "text";
+            throw new LimitExceededException("Estas superando el limite de caracteres en $superado.");
+        }
+
+        $userid = intval($userid);
+        if ($userid === 0) throw new WrongUserIdException("El id del usuario no es valido.");
+
+        $this->tx(function() use ($userid, $title, $text) {
+            if ($this->userdao->get($userid)) throw new UserNotExistsException("No existe ningun usuario con este id.");
+            
+            $recomendation = new Recomendation;
+            $recomendation->init($userid, $title, $text);
+            $this->dao->create($recomendation);
+        });
+    }
+
+    public function getPost(){
+
+    }
+
+    public function editPost(){
+
+    }
+
+    public function deletePost(){
+        
+    }
+
+    private function tx(callable $func){
+        try {
+            $pdo = $this->con->getConnection();
+            $pdo->beginTransaction();
+            $result = $func();
+            $pdo->commit();
+            return $result;
+        }
+        catch (Exception $e){
+            if ($pdo->inTransaction()) $pdo->rollBack();
+            throw $e;
+        }
+    }
+}
+
+?>
