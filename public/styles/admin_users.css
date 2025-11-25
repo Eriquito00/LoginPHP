@@ -1,0 +1,68 @@
+body {
+    box-sizing: border-box;
+    text-align: center;
+}
+
+section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 90%;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid white;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+button[type="submit"] {
+    padding: 2px;
+    margin: 0;
+    aspect-ratio: 1 / 1;
+    width: 50px;
+    border-radius: 10px;
+}
+
+button img {
+    border-radius: 10px
+}
+
+.lock {
+    background-color: lightsalmon;
+    border: 2px solid lightsalmon;
+    transition: all 0.3s;
+}
+
+.delete {
+    background-color: lightcoral;
+    border: 2px solid lightcoral;
+    transition: all 0.3s;
+}
+
+.lock:hover, .delete:hover {
+    opacity: 60%;
+}
+
+@media (max-width: 1000px) {
+    button[type="submit"]{
+        width: 40px;
+    }
+}
+
+@media (max-width: 700px) {
+    th {
+        font-size: 0.8rem;
+    }
+
+    td {
+        font-size: 0.7rem;
+    }
+}
