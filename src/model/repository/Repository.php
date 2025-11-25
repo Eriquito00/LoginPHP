@@ -26,9 +26,9 @@ interface Repository {
     public function delete($entity);
 
     /**
-     * @param T $entity
+     * @param int $id
      * @return T|null
      */
-    public function get($entity);
+    public function get($id);
 }
 ?>
