@@ -1,10 +1,17 @@
 const sentido = document.getElementById("sentido");
+const search = document.getElementById("search");
 
-sentido.addEventListener("change", async () => {
-    const valSentido = sentido.value;
+const filters = document.getElementsByClassName("filter");
 
+sentido.addEventListener("change", async () => createFilteredFeed());
+search.addEventListener("input", async () => createFilteredFeed());
+
+async function createFilteredFeed() {
     const formData = new FormData();
-    formData.append("sentido", valSentido);
+
+    for (const filter of filters){
+        formData.append(filter.id, filter);
+    }
     
     const response = await fetch(document.baseURI + "feed", {
         method: "POST",
@@ -13,4 +20,4 @@ sentido.addEventListener("change", async () => {
 
     const html = await response.text();
     document.getElementById("lista-posts").innerHTML = html;
-});
+}

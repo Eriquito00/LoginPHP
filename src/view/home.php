@@ -12,6 +12,7 @@
 </head>
 <body>
     <h1>PHProgramando</h1>
+    
     <nav>
         <ul>
             <li><a href=""><button>Home</button></a></li>
@@ -24,14 +25,21 @@
             <li><a href="admin/users"><button>Admin Users</button></a></li>
         </ul>
     </nav>
-    <div id="lista-posts">
-        <?php require_once(__DIR__ . "/home/_feed.php") ?>
-    </div>
-    <footer>
-        <select id="sentido">
+
+    <section class="feed_search">
+        <input id="search" class="filter" type="search">
+        <select id="sentido" class="filter">
             <option value="asc">ASC</option>
             <option value="desc" selected>DESC</option>
         </select>
-    </footer>
+    </section>
+
+    <section id="pagination_buttons">
+        <?php require_once(__DIR__ . "/components/_pagination_buttons.php") ?>
+    </section>
+
+    <section id="lista-posts">
+        <?php require_once(__DIR__ . "/components/_feed.php") ?>
+    </section>
 </body>
 </html>
