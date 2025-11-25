@@ -45,7 +45,7 @@ class RecomendationService {
     */
 
     public function getPost($page, $size, $username, $sentido): Pagination {
-        $pagination = new CriteriaRecomendation($page, $size, "", "", $sentido);
+        $pagination = new CriteriaRecomendation($page, $size, "", $sentido);
 
         return $this->tx(function() use ($pagination) {
             return $this->dao->getPaginated($pagination);

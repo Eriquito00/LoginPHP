@@ -17,7 +17,7 @@ class CriteriaRecomendation {
     private string $ordenarPor;
     private string $sentido;
 
-    public function __construct(int $page = self::DEFAULT_PAGE, int $size = self::MAX_SIZE, string $username = '', string $ordenarPor = self::DEFAULT_ORDER, string $sentido = self::DEFAULT_SENTIDO)
+    public function __construct(int $page = self::DEFAULT_PAGE, int $size = self::MAX_SIZE, string $username = '', string $sentido = self::DEFAULT_SENTIDO, string $ordenarPor = self::DEFAULT_ORDER)
     {
         // Normalizamos numeros y alguna entrada de datos posible:
         $this->page = max(1, $page);
@@ -41,8 +41,8 @@ class CriteriaRecomendation {
     }
 
     private function normalizeString(string $str) : string | null{
-        $r = $str == null ? null : trim($str);
-        return $r === '' ? null : $r;
+        $r = $str == null ? '' : trim($str);
+        return $r === '' ? '' : $r;
     }
 
     public function getPage() : int {

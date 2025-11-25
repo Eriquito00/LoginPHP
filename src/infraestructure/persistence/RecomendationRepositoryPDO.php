@@ -148,7 +148,7 @@ class RecomendationRepositoryPDO implements RecomendationRepo {
         $params[":page_size"] = $criteria->getSize();
         $params[":offset"] = $offset;
 
-        $paginatedStmt->execute([$params]);
+        $paginatedStmt->execute($params);
 
         $items = $paginatedStmt->fetchAll(PDO::FETCH_CLASS, Recomendation::class);
 

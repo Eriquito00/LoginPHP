@@ -10,7 +10,7 @@ async function createFilteredFeed() {
     const formData = new FormData();
 
     for (const filter of filters){
-        formData.append(filter.id, filter);
+        formData.append(filter.id, filter.value);
     }
     
     const response = await fetch(document.baseURI + "feed", {

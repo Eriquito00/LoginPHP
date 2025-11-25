@@ -34,12 +34,9 @@
         </select>
     </section>
 
-    <section id="pagination_buttons">
-        <?php require_once(__DIR__ . "/components/_pagination_buttons.php") ?>
-    </section>
-
     <section id="lista-posts">
         <?php require_once(__DIR__ . "/components/_feed.php") ?>
+        <?php require_once(__DIR__ . "/components/_pagination_buttons.php") ?>
     </section>
 </body>
 </html>
