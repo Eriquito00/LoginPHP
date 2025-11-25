@@ -12,7 +12,6 @@ use App\Model\Entities\Pagination;
 use PDO;
 use PDOException;
 
-/** @implements RecomendationRepo */
 class RecomendationRepositoryPDO implements RecomendationRepo {
     private Connection $connection;
 
@@ -85,7 +84,7 @@ class RecomendationRepositoryPDO implements RecomendationRepo {
             $pdo = $this->connection->getConnection();
 
             $stmt = $pdo->prepare("
-                DELETE FROM TABLE recomendations WHERE id = :id
+                DELETE FROM TABLE recomendations WHERE id = :id;
             ");
 
             $stmt->execute([
@@ -97,20 +96,20 @@ class RecomendationRepositoryPDO implements RecomendationRepo {
     }
 
     /**
-     * @param Recomendation $recomendation reference of a recomendation
+     * @param int $recomendationid
      * @return Recomendation|null
      */
-    public function get($recomendation) {
+    public function get($recomendationid) {
         try {
             $pdo = $this->connection->getConnection();
 
             $stmt = $pdo->prepare("
                 SELECT * FROM recomendations
-                WHERE id = :id
+                WHERE id = :id;
             ");
 
             $stmt->execute([
-                ":id" => $recomendation->getId()
+                ":id" => $recomendationid
             ]);
             return $stmt->fetchObject(Recomendation::class);
         } catch (PDOException $e) {
@@ -127,7 +126,7 @@ class RecomendationRepositoryPDO implements RecomendationRepo {
         $pdo = $this->connection->getConnection();
         [$whereSql, $params] = $this->buildWhere($criteria);
 
-        $sqlCount = "SELECT COUNT(*) AS total FROM recomendations r $whereSql";
+        $sqlCount = "SELECT COUNT(*) AS total FROM recomendations r $whereSql;";
         
         $stmt = $pdo->prepare($sqlCount);
         $stmt->execute($params);
@@ -142,14 +141,16 @@ class RecomendationRepositoryPDO implements RecomendationRepo {
         }
         $offset = ($criteria->getPage() - 1) * $criteria->getSize();
 
-        $sqlPagination = "SELECT * FROM recomendations r $whereSql ORDER BY {$criteria->getOrden()} {$criteria->getSentido()} LIMIT :page_size OFFSET :offset";
+        $sqlPagination = "SELECT * FROM recomendations r $whereSql ORDER BY {$criteria->getOrden()} {$criteria->getSentido()} LIMIT :page_size OFFSET :offset;";
+        
+        $paginatedStmt = $pdo->prepare($sqlPagination);
 
         $params[":page_size"] = $criteria->getSize();
         $params[":offset"] = $offset;
 
-        $stmt->execute([$params]);
+        $paginatedStmt->execute([$params]);
 
-        $items = $stmt->fetchAll(PDO::FETCH_CLASS, Recomendation::class);
+        $items = $paginatedStmt->fetchAll(PDO::FETCH_CLASS, Recomendation::class);
 
         return new Pagination(
             $items,
