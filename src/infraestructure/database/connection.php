@@ -5,9 +5,8 @@ use PDO;
 use Exception;
 use App\Infraestructure\Exceptions\DBErrorException;
 
-// TODO MIGRAR A DOTENV
-
 class Connection {
+    private static $instance = null;
     private $pdo;
 
     public function __construct() {
@@ -24,6 +23,13 @@ class Connection {
         } catch (Exception $e) {
             throw new DBErrorException("Conexion a la BBDD fallida");
         }
+    }
+
+    public static function getInstance() : self {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
 
     public function getConnection() : PDO {
