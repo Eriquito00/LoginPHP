@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application;
+namespace App\App;
 
 use App\Infraestructure\Database\Connection;
 use App\Infraestructure\Persistence\RecomendationRepositoryPDO;
@@ -9,20 +9,23 @@ use App\Application\Exceptions\LimitExceededException;
 use App\Application\Exceptions\UserNotExistsException;
 use App\Application\Exceptions\WrongUserIdException;
 use App\Infraestructure\Persistence\UserRepositoryPDO;
+use App\Model\Entities\CriteriaRecomendation;
+use App\Model\Entities\Pagination;
 use App\Model\Entities\Recomendation;
 
 class RecomendationService {
     private RecomendationRepositoryPDO $dao;
-    private UserRepositoryPDO $userdao;
+    //private UserRepositoryPDO $userdao;
     private Connection $con;
 
-    public function __construct(RecomendationRepositoryPDO $dao, UserRepositoryPDO $userdao, Connection $con){
+    public function __construct(RecomendationRepositoryPDO $dao, /*UserRepositoryPDO $userdao,*/ Connection $con){
         $this->dao = $dao;
-        $this->userdao = $userdao;
+        //$this->userdao = $userdao;
         $this->con = $con;
     }
 
-    public function post($userid, $title, $text){
+    /*
+    public function post($userid, $title, $text): void{
         if (!strlen($title) <= 50 && !strlen($text) <= 2000){
             $superado = !strlen($title) <= 50 ? "title" : "text";
             throw new LimitExceededException("Estas superando el limite de caracteres en $superado.");
@@ -39,9 +42,14 @@ class RecomendationService {
             $this->dao->create($recomendation);
         });
     }
+    */
 
-    public function getPost(){
+    public function getPost($page, $size, $username, $sentido): Pagination {
+        $pagination = new CriteriaRecomendation($page, $size, "", "", $sentido);
 
+        return $this->tx(function() use ($pagination) {
+            return $this->dao->getPaginated($pagination);
+        });
     }
 
     public function editPost(){
