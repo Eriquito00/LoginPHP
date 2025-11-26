@@ -76,10 +76,7 @@ class RecomendationRepositoryPDO implements RecomendationRepo {
         }
     }
 
-    /**
-     * @param Recomendation $recomendation
-     */
-    public function delete($recomendation) {
+    public function delete(int $id) {
         try {
             $pdo = $this->connection->getConnection();
 
@@ -88,7 +85,7 @@ class RecomendationRepositoryPDO implements RecomendationRepo {
             ");
 
             $stmt->execute([
-                ":id" => $recomendation->getId()
+                ":id" => $id
             ]);
         } catch (PDOException $e) {
             throw new DBErrorException("Internal Server Error: " . $e->getMessage());
@@ -99,7 +96,7 @@ class RecomendationRepositoryPDO implements RecomendationRepo {
      * @param int $recomendationid
      * @return Recomendation|null
      */
-    public function get($recomendationid) {
+    public function get(int $recomendationid) {
         try {
             $pdo = $this->connection->getConnection();
 
