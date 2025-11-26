@@ -5,7 +5,6 @@ use App\App\RecomendationService;
 use App\Infraestructure\Database\Connection;
 use App\Infraestructure\Persistence\UserRepositoryPDO;
 use App\Infraestructure\Persistence\RecomendationRepositoryPDO;
-use Dotenv\Parser\Value;
 use Exception;
 
 class HomeController {
@@ -15,8 +14,10 @@ class HomeController {
 
     public function showFeed(){
         try {
-            $search = $_POST["search"];
-            $sentido = $_POST["sentido"];
+            $page = $_POST["page"] ?? 1;
+            $size = $_POST["items_page"] ?? 10;
+            $search = $_POST["search"] ?? "";
+            $sentido = $_POST["sentido"] ?? "desc";
 
             $connection = Connection::getInstance();
 
@@ -24,7 +25,7 @@ class HomeController {
                 new RecomendationRepositoryPDO($connection), 
                 //new UserRepositoryPDO($connection), 
                 $connection);
-            $pageData = $recoService->getPost(1, 10, $search, $sentido);
+            $pageData = $recoService->getPost($page, $size, $search, $sentido);
             require_once(__DIR__ . "/../view/components/_feed.php");
             require_once(__DIR__ . "/../view/components/_pagination_buttons.php");
         }
