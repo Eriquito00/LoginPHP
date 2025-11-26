@@ -1,3 +1,5 @@
+USE mardb;
+
 INSERT INTO roles (role_name) VALUES ('admin'), ('user'), ('moderator');
 
 INSERT INTO users (username, email, role_id, password) VALUES

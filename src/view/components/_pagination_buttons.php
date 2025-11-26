@@ -13,17 +13,19 @@ if (isset($pageData)){
 
     createButton("<", $actualPage - 1, "page", []);
 
-    createButton($actualPage, $actualPage, "page", []);
+    if ($actualPage > 2) createButton(1, 1, "page", []);
+
+    if ($actualPage >= 4) createButton("...", "", "", []);
+
+    if ($hasPrev) { createButton($actualPage -1, $actualPage - 1, "page", []); }
+
+    createButton($actualPage, $actualPage, "page", ["actual_page"]);
 
     if ($hasNext) { createButton($actualPage + 1, $actualPage + 1, "page", []); }
 
-    if ($totalPages > $actualPage + 3) {
-        createButton("...", "", "", []);
-        createButton($totalPages, $totalPages, "page", []);
-    }
-    else if ($totalPages > $actualPage + 2){
-        createButton($totalPages, $totalPages, "page", []);
-    }
+    if ($totalPages > $actualPage + 2) createButton("...", "", "", []);
+
+    if ($totalPages > $actualPage + 1) createButton($totalPages, $totalPages, "page", []);
 
     createButton(">", $actualPage + 1, "page", []);
 

@@ -14,7 +14,7 @@ class HomeController {
 
     public function showFeed(){
         try {
-            $page = $_POST["page"] ?? 1;
+            $page = empty($_POST["page"]) ? 1 : $_POST["page"];
             $size = $_POST["items_page"] ?? 10;
             $search = $_POST["search"] ?? "";
             $sentido = $_POST["sentido"] ?? "desc";
