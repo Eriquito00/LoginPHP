@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS recomendations (
     user_id             INT NOT NULL,
     title               VARCHAR(50) NOT NULL,
     description         TEXT NOT NULL,
-    image               VARCHAR(255),
+    image_url           VARCHAR(255),
     created_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_recomendations_users FOREIGN KEY (user_id) REFERENCES users(id)
 );
