@@ -1,0 +1,48 @@
+.section_feed{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    width: 100%;
+}
+
+.user_reco {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    width: 100%;
+}
+
+.user {
+
+}
+
+.user_img {
+    aspect-ratio: 1 / 1;
+    height: 200px;
+    width: 200px;
+    border-radius: 100px;
+}
+
+.user_name {
+
+}
+
+.reco{
+
+}
+
+.reco_img{
+
+}
+
+.reco_title{
+
+}
+
+.reco_desc{
+
+}
+
+.reco_date{
+
+}

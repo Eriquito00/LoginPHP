@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./styles/navigation.css">
     <link rel="stylesheet" href="./styles/style.css">
     <link rel="stylesheet" href="./styles/_pagination_buttons.css">
+    <link rel="stylesheet" href="./styles/_feed.css">
     <script defer src="./js/PaginationData.js"></script>
 </head>
 <body>
