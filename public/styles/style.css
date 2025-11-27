@@ -24,11 +24,6 @@ input[type="search"], select {
     justify-content: center;
 }
 
-.actual_page {
-    background-color: black;
-    box-shadow: 0 0 2px white;
-}
-
 @media (max-width: 1200px) {
     .feed_search {
         display: grid;

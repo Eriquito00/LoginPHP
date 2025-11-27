@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <link rel="stylesheet" href="./styles/navigation.css">
     <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="./styles/_pagination_buttons.css">
     <script defer src="./js/PaginationData.js"></script>
 </head>
 <body>
@@ -27,13 +28,13 @@
     </nav>
 
     <section class="feed_search">
-        <input id="search" class="filter" type="search">
+        <input id="search" class="filter" type="search" placeholder="Encuentra a tu autor favorito">
         <select id="sentido" class="filter">
             <option value="asc">ASC</option>
             <option value="desc" selected>DESC</option>
         </select>
     </section>
 
-    <section id="lista-posts"></section>
+    <section id="lista_posts"></section>
 </body>
 </html>

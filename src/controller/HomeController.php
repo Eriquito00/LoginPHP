@@ -14,16 +14,21 @@ class HomeController {
 
     public function showFeed(){
         try {
-            $page = empty($_POST["page"]) ? 1 : $_POST["page"];
-            $size = $_POST["items_page"] ?? 10;
-            $search = $_POST["search"] ?? "";
-            $sentido = $_POST["sentido"] ?? "desc";
+            if (empty($_SERVER['HTTP_SEC_FETCH_MODE']) || $_SERVER['HTTP_SEC_FETCH_MODE'] !== 'cors') {
+                header("Location: " . BASE_URL);
+                exit;
+            }
+
+            $page = empty($_GET["page"]) ? 1 : $_GET["page"];
+            $size = $_GET["items_page"] ?? 10;
+            $search = $_GET["search"] ?? "";
+            $sentido = $_GET["sentido"] ?? "desc";
 
             $connection = Connection::getInstance();
 
             $recoService = new RecomendationService(
                 new RecomendationRepositoryPDO($connection), 
-                //new UserRepositoryPDO($connection), 
+                new UserRepositoryPDO($connection), 
                 $connection);
             $pageData = $recoService->getPost($page, $size, $search, $sentido);
             require_once(__DIR__ . "/../view/components/_feed.php");

@@ -1,7 +1,7 @@
 const sentido = document.getElementById("sentido");
 const search = document.getElementById("search");
 
-const filters = document.getElementsByClassName("filter");
+const filters = Array.from(document.getElementsByClassName("filter"));
 let buttons;
 
 sentido.addEventListener("change", async () => createFilteredFeed(1));
@@ -12,29 +12,26 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function createFilteredFeed(page) {
-    const elements = [...filters];
+    const params = new URLSearchParams();
 
-    const formData = new FormData();
+    filters.forEach(e => {
+        params.append(e.id, e.value);
+    })
 
-    for (const element of elements){
-        formData.append(element.id, element.value);
-    }
+    params.append("page", page);
 
-    formData.append("page", page);
-    
-    const response = await fetch(document.baseURI + "feed", {
-        method: "POST",
-        body: formData
+    const newUrl = "?" + params.toString();
+    window.history.pushState({}, '', newUrl);
+
+    const response = await fetch("feed?" + params.toString(), {
+        method: "GET",
     });
 
     const html = await response.text();
-    document.getElementById("lista-posts").innerHTML = html;
+    document.getElementById("lista_posts").innerHTML = html;
     
     buttons = Array.from(document.querySelectorAll("#page"));
     buttons.forEach((btn) => {
         btn.addEventListener("click", async () => createFilteredFeed(btn.value));
-        console.log(btn.value)
     });
-
-    console.log(buttons);
 }
