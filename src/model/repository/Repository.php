@@ -20,15 +20,15 @@ interface Repository {
     public function update($entity, $newEntity);
 
     /**
-     * @param T $entity
+     * @param int $id
      * @return void
      */
-    public function delete($entity);
+    public function delete(int $id);
 
     /**
      * @param int $id
      * @return T|null
      */
-    public function get($id);
+    public function get(int $id);
 }
 ?>
