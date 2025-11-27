@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION["register_try"])){
+    $_SESSION["register_try"] = 0;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -27,7 +34,9 @@
             <input name="repeat_password" type="password" placeholder="Repite tu contraseña" minlength="8" required>
         </div>
 
-        <div class="g-recaptcha" data-sitekey="<?= $_ENV["RECAPTCHA_SITE_KEY"] ?>"></div>
+        <?php if ($_SESSION["register_try"] >= 3):?>
+            <div class='g-recaptcha' data-sitekey="<?= $_ENV['RECAPTCHA_SITE_KEY'] ?>"></div>
+        <?php endif; ?>
 
         <button type="submit">Register</button>
     </form>

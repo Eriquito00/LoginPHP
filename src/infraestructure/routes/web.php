@@ -12,7 +12,7 @@ use App\Controller\AdminController;
 
 Router::get("/", [HomeController::class, "index"]);
 
-Router::post("/feed", [HomeController::class, "showFeed"]);
+Router::get("/feed", [HomeController::class, "showFeed"]);
 
 Router::get("/login", [LoginController::class, "index"]);
 Router::post("/login", [LoginController::class, "getData"]);
@@ -33,6 +33,8 @@ Router::get("/register", [RegisterController::class, "index"]);
 Router::post("/register", [RegisterController::class, "getData"]);
 
 Router::get("/profile", [ProfileController::class, "index"]);
+
+Router::get("/profile/setup", [ProfileController::class, "indexProfileSetup"]);
 Router::post("/profile/setup", [ProfileController::class, "userSetup"]);
 
 Router::get("/profile/create", [RecomendationController::class, "indexCreate"]);
