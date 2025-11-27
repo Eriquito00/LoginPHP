@@ -6,27 +6,15 @@ class User {
     private string $username;
     private string $email;
     private string $role;
+    private int $role_id;
     private string $passwordHash;
+
+    private const AVAILABLE_ROLES = ["user" => 1, "mod" => 2, "admin" => 3];
 
     /**
      * Constructor vacio para PDO::FETCH_CLASS
      */
     public function __construct() {}
-
-
-    /**
-     * @param array $data ARRAY ASSOC con los datos
-     * 
-     * @return void
-     */
-    public function hydrate(array $data) : void {
-        foreach ($data as $k => $v) {
-            if(property_exists($this, $k)) {
-                $this->$k = $v;
-            }
-        }
-    }
-
 
     /**
      * Funcion para hidratar el objeto como si fuera un constructor parametrizado
@@ -38,14 +26,23 @@ class User {
      * 
      * @return void
      */
-    public function init(int $id, string $username, string $email, string $role = "user",string $passwordHash = '') : void {
+    public function init(
+        int $id,
+        string $username,
+        string $email,
+        string $role,
+        string $passwordHash
+    ): void {
         $this->id = $id;
         $this->username = $username;
-        $this->role = $role;
         $this->email = $email;
-        if ($passwordHash !== '') {
-            $this->passwordHash = $passwordHash;
+        $this->role = $role;
+        if (!empty(self::AVAILABLE_ROLES[$role])) {
+            $this->role_id = self::AVAILABLE_ROLES[$role];
+        } else {
+            $this->role_id = 1;
         }
+        $this->passwordHash = $passwordHash;
     }
 
     public function setPassword(string $plain) : void {
@@ -71,6 +68,10 @@ class User {
 
     public function getRole() {
         return $this->role;
+    }
+
+    public function getRoleId() {
+        return $this->role_id;
     }
 
     public function getPasswordHash() {
