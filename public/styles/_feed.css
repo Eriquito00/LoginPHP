@@ -3,46 +3,130 @@
     flex-direction: column;
     align-items: center;
     align-content: center;
-    width: 100%;
+    max-width: 100%;
 }
 
 .user_reco {
+    background-color: transparent;
+    box-shadow: none;
     display: grid;
-    grid-template-columns: 20% 80%;
-    width: 100%;
+    grid-template-columns: 1fr 5fr;
+    max-width: 60%;
+    width: 60%;
 }
 
 .user {
-
+    margin: 10px 0 0 0;
+    text-align: center;
 }
 
 .user_img {
     aspect-ratio: 1 / 1;
-    height: 200px;
-    width: 200px;
-    border-radius: 100px;
+    min-height: 70px;
+    min-width: 70px;
+    max-height: 70px;
+    max-width: 70px;
+    border-radius: 100%;
 }
 
 .user_name {
-
+    margin: 10px;
+    font-size: 0.7rem;
 }
 
 .reco{
-
+    border-left: 2px solid rgba(255, 255, 255, 0.5);
+    margin-bottom: 50px;
+    padding: 10px;
+    padding-left: 30px;
+    display: flex;
 }
 
 .reco_img{
+    aspect-ratio: 9 / 16;
+    float: right;
+    min-height: 250px;
+    min-width: 250px;
+    max-height: 250px;
+    max-width: 250px;
+    object-fit: cover;
+    margin: 0 0 10px 20px;
+    border-radius: 10px;
+}
 
+.reco_post{
+    position: relative;
+    padding: 0;
+    margin-right: 50px;
 }
 
 .reco_title{
-
+    font-size: 1.5rem;
 }
 
 .reco_desc{
-
+    font-size: 0.8rem;
 }
 
 .reco_date{
+    font-size: 0.6rem;
+}
 
+@media (max-width: 1500px) {
+    .reco_img {
+        min-height: 200px;
+        min-width: 200px;
+        max-height: 200px;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .user_reco {
+        grid-template-columns: 100%;
+    }
+
+    .user {
+        padding: 10px 20px 25px 25px;
+        text-align: justify;
+        display: flex;
+        margin-bottom: 20px;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .user_img {
+        min-height: 100%;
+        min-width: 50px;
+        max-height: 100%;
+        max-width: 50px;
+    }
+
+    .user_name {
+        display: flex;
+        align-items: center;
+    }
+
+    .reco {
+        margin-left: 0px;
+        padding: 10px 30px 10px 30px;
+        border: none;
+        margin-bottom: 30px;
+    }
+
+    .reco_post {
+        margin-right: 0px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .reco_img {
+        aspect-ratio: 9 / 16;
+        float: none;
+        max-height: 300px;
+        width: 100%;
+        max-width: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+        margin: 0 0 30px 0;
+    }
 }
