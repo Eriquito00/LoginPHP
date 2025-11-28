@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION["login_try"])){
+    $_SESSION["login_try"] = 0;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -29,7 +36,9 @@
             <a class="forgot_passwd" href="login/forgot-password-data">Has olvidado la contraseña?</a>
         </div>
 
-        <div class="g-recaptcha" data-sitekey="<?= $_ENV["RECAPTCHA_SITE_KEY"] ?>"></div>
+        <?php if ($_SESSION["login_try"] >= 3):?>
+            <div class='g-recaptcha' data-sitekey="<?= $_ENV['RECAPTCHA_SITE_KEY'] ?>"></div>
+        <?php endif; ?>
 
         <button type="submit">Login</button>
     </form>

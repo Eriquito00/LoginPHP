@@ -9,13 +9,37 @@ class LoginController {
     }
 
     public function getData(){
-        $recaptcha = new Recaptcha($_SERVER["REMOTE_ADDR"], $_POST["g-recaptcha-response"]);
-        if (!$recaptcha->verifyRecaptcha()) return $this->index();
+        session_start();
         $email = $_POST["email"] ?? null;
         $password = $_POST["password"] ?? null;
         $remember = $_POST["remember"] ?? null;
 
-        echo $email . " " . $password . " " . $remember;
+        if (!isset($_SESSION['login_try'])) {
+            $_SESSION['login_try'] = 0;
+        }
+
+        try {
+            if ($_SESSION["login_try"] >= 3){
+                $recaptcha = new Recaptcha($_SERVER["REMOTE_ADDR"], $_POST["g-recaptcha-response"]);
+                if (!$recaptcha->verifyRecaptcha()){
+                    $_SESSION["login_try"]++;
+                    header("Location: " . BASE_URL . "login");
+                    exit;
+                }
+            }
+
+            //crear la clase donde se haran las comprovaciones y tirara la excepcion
+            
+
+            $_SESSION["login_try"] = 0;
+            //Una vez hecho el login por defecto se le llevara al home, si no se cambia
+            header("Location: " . BASE_URL);
+        }
+        catch (InputMismatchError $e){
+            $_SESSION["login_try"]++;
+            header("Location: " . BASE_URL . "login");
+            exit;
+        }
     }
 
     public function forgotPasswordData(){
