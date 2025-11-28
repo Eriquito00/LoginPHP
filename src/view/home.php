@@ -28,13 +28,13 @@
         </ul>
     </nav>
 
-    <section class="feed_search">
+    <header class="feed_search">
         <input id="search" class="filter" type="search" placeholder="Encuentra a tu autor favorito">
         <select id="sentido" class="filter">
             <option value="asc">ASC</option>
             <option value="desc" selected>DESC</option>
         </select>
-    </section>
+    </header>
 
     <section id="lista_posts"></section>
 </body>
