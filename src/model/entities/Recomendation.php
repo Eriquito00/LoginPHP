@@ -6,7 +6,7 @@ class Recomendation {
     private int $user_id;
     private string $title;
     private string $description;
-    private string $image_url;
+    private string | null $image_url;
     private string $created_at;
 
     /**
@@ -66,7 +66,7 @@ class Recomendation {
         return $this->description; 
     }
 
-    public function getImageUrl() : string { 
+    public function getImageUrl() : string | null { 
         return $this->image_url; 
     }
 
