@@ -145,7 +145,7 @@ class RecomendationRepositoryPDO implements RecomendationRepo {
         $params[":page_size"] = $criteria->getSize();
         $params[":offset"] = $offset;
 
-        $paginatedStmt->execute([$params]);
+        $paginatedStmt->execute($params);
 
         $items = $paginatedStmt->fetchAll(PDO::FETCH_CLASS, Recomendation::class);
 
@@ -171,7 +171,8 @@ class RecomendationRepositoryPDO implements RecomendationRepo {
         $params = [];
 
         if (!empty($criteria->getUsername())) {
-            array_push($conds, "r.user_id LIKE :username");
+            $sub = "(SELECT username FROM users u WHERE u.id = r.user_id)";
+            array_push($conds, "$sub LIKE :username");
             $params[":username"] = "%{$criteria->getUsername()}%";
         }
 
