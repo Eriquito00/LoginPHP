@@ -18,7 +18,7 @@
         </div>
         <div class="div-username">
             <label for="username">Username</label>
-            <input type="text" placeholder="Introduce tu username" required>
+            <input name="username" type="text" placeholder="Introduce tu username" required>
         </div>
         <div class="div-button">
             <button type="submit">Crear perfil</button>

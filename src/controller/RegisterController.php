@@ -6,7 +6,6 @@ use App\Controller\Exceptions\InputMismatchError;
 use App\Helpers\Recaptcha;
 use App\Infraestructure\Database\Connection as DatabaseConnection;
 use App\Infraestructure\Persistence\UserRepositoryPDO;
-use Dba\Connection;
 
 class RegisterController {
 
@@ -33,9 +32,12 @@ class RegisterController {
                     exit;
                 }
             }
+            
+            $userServ = new UserService(new UserRepositoryPDO(DatabaseConnection::getInstance()), DatabaseConnection::getInstance());
+            $userServ->verifyRegister($email, $password, $repeat_password);
 
-            $userServ = new UserService();
-            $userServ->register($email, $password, $repeat_password);
+            $_SESSION["registerEmail"] = $email;
+            $_SESSION["registerPassword"] = password_hash($password, PASSWORD_BCRYPT);
             
             $_SESSION["register_try"] = 0;
             $_SESSION["allow_profile_setup"] = true;
