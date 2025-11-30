@@ -2,7 +2,7 @@
 namespace App\Model\Entities;
 
 class User {
-    private int $id;
+    private ?int $id = null;
     private string $username;
     private string $email;
     private string $role;
@@ -19,7 +19,7 @@ class User {
 
     /**
      * Funcion para hidratar el objeto como si fuera un constructor parametrizado
-     * @param int $id
+     * @param int|null $id
      * @param string $username
      * @param string $email
      * @param string $role
@@ -28,7 +28,7 @@ class User {
      * @return void
      */
     public function init(
-        int $id,
+        ?int $id,
         string $username,
         string $email,
         string $role,

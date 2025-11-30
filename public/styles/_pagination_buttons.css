@@ -1,0 +1,46 @@
+.section_pagination_buttons {
+    width: 100%;
+    text-align: center;
+}
+
+.buttons {
+    display: inline-flex;
+    text-align: center;
+    margin: 20px;
+    padding: 3px;
+    border-radius: 50px;
+    box-shadow: 0 0 2px white;
+}
+
+.btn_filter {
+    aspect-ratio: 1 / 1;
+    line-height: 1;
+    font-size: 0.8rem;
+    min-height: 40px;
+    min-width: 40px;
+    max-height: 60px;
+    max-width: 60px;
+    margin: 3px;
+    background-color: transparent;
+    border: none;
+    border-radius: 50px;
+    transition: ease background-color 0.3s;
+}
+
+.btn_filter:hover {
+    background-color: rgb(50, 50, 50);
+}
+
+.btn_filter:focus {
+    box-shadow: none;
+    border: none;
+}
+
+.actual_page {
+    background-color: black;
+    box-shadow: 0 0 2px white;
+}
+
+.no_clickable {
+    pointer-events: none;
+}

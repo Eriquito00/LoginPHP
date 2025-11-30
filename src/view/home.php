@@ -4,13 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Con ♥️ y PHP</title>
-    <base href="/LoginPHP/public/">
+    <base href="<?= BASE_URL ?>">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <link rel="stylesheet" href="./styles/navigation.css">
     <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="./styles/_pagination_buttons.css">
+    <link rel="stylesheet" href="./styles/_feed.css">
+    <script defer src="./js/PaginationData.js"></script>
 </head>
 <body>
     <h1>PHProgramando</h1>
+    
     <nav>
         <ul>
             <li><a href=""><button>Home</button></a></li>
@@ -23,5 +27,15 @@
             <li><a href="admin/users"><button>Admin Users</button></a></li>
         </ul>
     </nav>
+
+    <header class="feed_search">
+        <input id="search" class="filter" type="search" placeholder="Encuentra a tu autor favorito">
+        <select id="sentido" class="filter">
+            <option value="asc">ASC</option>
+            <option value="desc" selected>DESC</option>
+        </select>
+    </header>
+
+    <section id="lista_posts"></section>
 </body>
 </html>

@@ -6,8 +6,8 @@ class Recomendation {
     private int $user_id;
     private string $title;
     private string $description;
-    private string $imageUrl;
-    private string $createdAt;
+    private string | null $image_url;
+    private string $created_at;
 
     /**
      * Constructor vacio para PDO::FETCH_CLASS
@@ -35,17 +35,17 @@ class Recomendation {
      * @param int $user_id
      * @param string $title
      * @param string $description
-     * @param string $imageUrl
+     * @param string $image_url
      * 
      * @return void
      */
-    public function init(int $user_id, string $title, string $description, string $imageUrl = '', int $id = 0) : void {
+    public function init(int $user_id, string $title, string $description, string $image_url = '', int $id = 0) : void {
         $this->id = $id;
         $this->user_id = $user_id;
         $this->title = $title;
         $this->description = $description;
-        $this->imageUrl = $imageUrl;
-        $this->createdAt = "";
+        $this->image_url = $image_url;
+        $this->created_at = "";
     }
 
 
@@ -66,12 +66,12 @@ class Recomendation {
         return $this->description; 
     }
 
-    public function getImageUrl() : string { 
-        return $this->imageUrl; 
+    public function getImageUrl() : string | null { 
+        return $this->image_url; 
     }
 
     public function getCreatedAt() : string {
-        return $this->createdAt;
+        return $this->created_at;
     }
 
     public function __toString() {
@@ -80,8 +80,8 @@ class Recomendation {
                     userId: {$this->user_id},
                     title: {$this->title},
                     description: {$this->description},
-                    ImageUrl: {$this->imageUrl},
-                    created_at: {$this->createdAt}
+                    Image_url: {$this->image_url},
+                    created_at: {$this->created_at}
                 }";
     }
 }

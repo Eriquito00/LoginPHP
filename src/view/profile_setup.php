@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Setup</title>
-    <base href="/LoginPHP/public/">
+    <base href="<?= BASE_URL ?>">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <link rel="stylesheet" href="./styles/profile_setup.css">
 </head>
@@ -18,7 +18,7 @@
         </div>
         <div class="div-username">
             <label for="username">Username</label>
-            <input type="text" placeholder="Introduce tu username" required>
+            <input name="username" type="text" placeholder="Introduce tu username" required>
         </div>
         <div class="div-button">
             <button type="submit">Crear perfil</button>
