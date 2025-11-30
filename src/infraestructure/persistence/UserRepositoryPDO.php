@@ -115,6 +115,19 @@ class UserRepositoryPDO implements UserRepo {
         }
     }
 
+    public function getByIdentity(string $identity): ?User {
+        try {
+            $pdo = $this->connection->getConnection();
+            $stmt = $pdo->prepare('
+                SELECT * FROM users WHERE email = :identity OR username = :identity;
+            ');
+            $stmt->execute([":identity" => $identity]);
+            return $stmt->fetchObject(User::class);
+        } catch (PDOException $e) {
+            throw new DBErrorException("Internal Server Error: " . $e->getMessage());
+        }
+    }
+
     public function getIdByUsername(string $username): ?int {
         try {
             $pdo = $this->connection->getConnection();

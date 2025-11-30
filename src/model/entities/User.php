@@ -8,6 +8,7 @@ class User {
     private string $role;
     private int $role_id;
     private string $passwordHash;
+    private bool $active;
 
     private const AVAILABLE_ROLES = ["user" => 1, "mod" => 2, "admin" => 3];
 
@@ -43,6 +44,7 @@ class User {
             $this->role_id = 1;
         }
         $this->passwordHash = $passwordHash;
+        $this->active = (bool)1;
     }
 
     public function setPassword(string $plain) : void {
@@ -72,6 +74,10 @@ class User {
 
     public function getRoleId() {
         return $this->role_id;
+    }
+
+    public function isActive(): bool {
+        return $this->active;
     }
 
     public function getPasswordHash() {
