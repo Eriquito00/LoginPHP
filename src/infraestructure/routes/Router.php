@@ -2,9 +2,11 @@
 
 namespace App\Infraestructure\Routes;
 
+use App\Infraestructure\Middleware\AuthMiddleware;
 
 class Router {
     private static $routes = [];
+    private static $authMiddleware = null;
 
     public static function get($uri, $callback) {
         $uri = trim($uri, '/');
@@ -14,6 +16,10 @@ class Router {
     public static function post($uri, $callback) {
         $uri = trim($uri, '/');
         self::$routes['POST'][$uri] = $callback;
+    }
+
+    public static function setAuthMiddleware(AuthMiddleware $middleware): void {
+        self::$authMiddleware = $middleware;
     }
 
     public static function dispatch($method) {
@@ -36,6 +42,12 @@ class Router {
                 $found = true;
                 $params = array_slice($matches, 1);
                 
+                // Primer paso de la mierdipipeline -> Auth
+                if (self::$authMiddleware !== null) {
+                    self::$authMiddleware->handle('/' . $path);
+                }
+
+                // Llamada a los controladores
                 //con funcion anonima
                 if (is_callable($callback)){
                     $response = $callback(...$params);
