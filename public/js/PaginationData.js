@@ -34,4 +34,6 @@ async function createFilteredFeed(page) {
     buttons.forEach((btn) => {
         btn.addEventListener("click", async () => createFilteredFeed(btn.value));
     });
+
+    window.scrollTo({ top: 0, behavior: "auto"});
 }
