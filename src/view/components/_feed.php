@@ -7,6 +7,7 @@ if (isset($pageData)) {
 ?>
 
 <?php if (isset($pageData)): ?>
+<link rel="stylesheet" href="./styles/_feed.css">
 <section class="section_feed">
     <?php foreach($recomendations as $reco): ?>
         <article class="user_reco">

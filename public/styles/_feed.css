@@ -10,9 +10,9 @@
     background-color: transparent;
     box-shadow: none;
     display: grid;
-    grid-template-columns: 1fr 5fr;
-    max-width: 60%;
-    width: 60%;
+    grid-template-columns: 1fr 7fr;
+    max-width: 100%;
+    width: 100%;
 }
 
 .user {
