@@ -10,9 +10,9 @@
     background-color: transparent;
     box-shadow: none;
     display: grid;
-    grid-template-columns: 1fr 5fr;
-    max-width: 60%;
-    width: 60%;
+    grid-template-columns: 1fr 7fr;
+    max-width: 100%;
+    width: 100%;
 }
 
 .user {
@@ -43,12 +43,12 @@
 }
 
 .reco_img{
-    aspect-ratio: 9 / 16;
+    aspect-ratio: 1 / 1;
     float: right;
-    min-height: 250px;
-    min-width: 250px;
-    max-height: 250px;
-    max-width: 250px;
+    min-height: 350px;
+    min-width: 350px;
+    max-height: 350px;
+    max-width: 350px;
     object-fit: cover;
     margin: 0 0 10px 20px;
     border-radius: 10px;

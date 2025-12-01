@@ -11,6 +11,7 @@ if (isset($pageData)){
 ?>
 
 <?php if (isset($pageData)): ?>
+<link rel="stylesheet" href="./styles/_pagination_buttons.css">
 <section class='section_pagination_buttons'>
     <?php if ($totalItems <= 0): ?>
         <h3>No se han encontrado resultados</h3>
