@@ -17,10 +17,10 @@ if (isset($pageData)) {
             </div>
             <div class="reco">
                 <div class="reco_post">
+                    <h3 class="reco_title"><?= $reco->getTitle(); ?></h3>
                     <?php if(!empty($reco->getImageUrl())): ?>
                         <img class="reco_img" src="<?= $reco->getImageUrl(); ?>" alt="<?= $reco->getTitle(); ?>">
                     <?php endif; ?>
-                    <h3 class="reco_title"><?= $reco->getTitle(); ?></h3>   
                     <p class="reco_desc"><?= $reco->getDescription(); ?></p>
                     <small class="reco_date"><?= $reco->getCreatedAt(); ?></small>
                 </div>
