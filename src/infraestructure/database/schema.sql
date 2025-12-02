@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS recomendations (
     id    BIGINT AUTO_INCREMENT PRIMARY KEY,
-    user_id             INT NOT NULL,
+    user_id             BIGINT NOT NULL,
     title               VARCHAR(50) NOT NULL,
     description         TEXT NOT NULL,
     image_url           VARCHAR(255),
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS recomendations (
 
 CREATE TABLE IF NOT EXISTS refresh_tokens (
     id              BIGINT AUTO_INCREMENT PRIMARY KEY,
-    user_id         INT NOT NULL,
+    user_id         BIGINT NOT NULL,
     token_hash      CHAR(64) NOT NULL,
     created_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     expires_at      TIMESTAMP NOT NULL,
@@ -41,7 +41,6 @@ CREATE TABLE IF NOT EXISTS refresh_tokens (
     ip              VARCHAR(45) NULL,
     user_agent      VARCHAR(255) NULL,
     CONSTRAINT fk_rt_user FOREIGN KEY (user_id) REFERENCES users(id),
-    CONSTRAINT fk_rt_parent FOREIGN KEY (parent_id) REFERENCES refresh_tokens(id),
     INDEX idx_rt_user (user_id),
     INDEX idx_rt_valid (user_id, revoked_at, expires_at)
 );
