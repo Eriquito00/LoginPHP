@@ -46,7 +46,7 @@ class TokenManager {
         $token = bin2hex(random_bytes(64));
         $hash = hash("sha256", $token);
 
-        $expiresAt = (new \DateTimeImmutable('+' . $this->refreshTtlDays . ' days'));
+        $expiresAt = (new \DateTimeImmutable())->modify("+{$this->refreshTtlDays} days");
         $expTs = $expiresAt->getTimestamp();
 
         $this->persistence->store([
@@ -96,6 +96,8 @@ class TokenManager {
         if (($payload->aud ?? null) !== $this->aud) {
             throw new \UnexpectedValueException('Audience (aud) inválido');
         }
+
+        return $payload;
     }
 
     private function sign(array $payload) : string {

@@ -18,7 +18,7 @@ class RefreshTokenRepositoryPDO implements RefreshTokenRepo{
         $pdo = $this->con->getConnection();
         $stmt = $pdo->prepare('
             INSERT INTO refresh_tokens (user_id, token_hash, expires_at, ip, user_agent)
-                VALUES(:user_id, :token_hash, :expires_at, :ip, :ua);
+                VALUES(:user_id, :token_hash, :expires_at, :ip, :user_agent);
         ');
         $stmt->bindValue(':user_id', $data['user_id'], PDO::PARAM_INT);
         $stmt->bindValue(':token_hash', $data['token_hash'], PDO::PARAM_STR);
