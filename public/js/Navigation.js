@@ -1,4 +1,4 @@
-const button = document.getElementById("btn_navigation");
+const button = document.querySelectorAll("#btn_navigation");
 const navigation = document.getElementById("navigation");
 const main = document.getElementById("main_content");
 
@@ -24,22 +24,26 @@ function handleResize() {
 }
 
 function updateButtonIcon() {
-    button.style.backgroundImage = navigation.classList.contains("nav_disabled")
-    ? button.style.backgroundImage = 'url("./assets/nav_en.png")'
-    : button.style.backgroundImage = 'url("./assets/nav_dis.png")';
+    button.forEach((btn) => {
+        btn.style.backgroundImage = navigation.classList.contains("nav_disabled")
+        ? btn.style.backgroundImage = 'url("./assets/nav_en.png")'
+        : btn.style.backgroundImage = 'url("./assets/nav_dis.png")';
+    });
 }
 
-button.addEventListener("click", () => {
-    if (window.innerWidth <= 850) {
-        navigation.classList.toggle("nav_disabled");
-        navigation.classList.add("nav_enabled_big");
-    } else {
-        navigation.classList.toggle("nav_disabled");
-        main.classList.toggle("main_nav_disabled");
-        navManuallyHidden = navigation.classList.contains("nav_disabled");
-    }
-    updateButtonIcon();
-});
+button.forEach((btn) => {
+    btn.addEventListener("click", () => {
+        if (window.innerWidth <= 850) {
+            navigation.classList.toggle("nav_disabled");
+            navigation.classList.add("nav_enabled_big");
+        } else {
+            navigation.classList.toggle("nav_disabled");
+            main.classList.toggle("main_nav_disabled");
+            navManuallyHidden = navigation.classList.contains("nav_disabled");
+        }
+        updateButtonIcon();
+    });
+})
 
 window.addEventListener("resize", () => {
     handleResize();

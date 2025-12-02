@@ -1,8 +1,11 @@
 <link rel="stylesheet" href="./styles/_header.css">
 <header class="feed_search">
-    <h1 class="header_title">PHProgramando</h1>
+    <div class="header_title">
+        <button class="btn_navigation btn_title" id="btn_navigation"></button>
+        <h1 class="header_h1">PHProgramando</h1>
+    </div>
     <div class="header_inputs">
-        <button class="btn_navigation" id="btn_navigation"></button>
+        <button class="btn_navigation btn_nav" id="btn_navigation"></button>
         <input class="filter" id="search" type="search" placeholder="Encuentra a tu autor favorito">
     </div>
     <div class="header_buttons">
