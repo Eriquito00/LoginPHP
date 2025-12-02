@@ -96,7 +96,9 @@ class UserRepositoryPDO implements UserRepo {
                 SELECT * FROM users WHERE email = :email;
             ');
             $stmt->execute([":email" => $email]);
-            return $stmt->fetchObject(User::class);
+            $result = $stmt->fetchObject(User::class);
+            if (!$result) return null;
+            return $result;
         } catch (PDOException $e) {
             throw new DBErrorException("Internal Server Error: " . $e->getMessage());
         }
