@@ -1,36 +1,41 @@
 <?php
 namespace App\Controller;
 
-use App\Auth\AuthService;
+use App\App\Auth\AuthService;
 use App\Helpers\Recaptcha;
 use Throwable;
 
 class AuthController {
-    public function __construct(
-        private AuthService $authService
-    ) {}
+    private static ?AuthService $authService = null;
+
+    public static function setAuthService(AuthService $instance): AuthService {
+        if (self::$authService === null) {
+            self::$authService = $instance;
+        }
+        return self::$authService;
+    }
+
+    public function __construct() {}
     
-    public function login(string $plain, string $identity, string $remember) {
+    public function login(string $identity, string $plain, string $remember) {
         $ip = $_SERVER['REMOTE_ADDR'] ?? "0.0.0.0";
         $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
 
-        $result = $this->authService->login($identity, $plain, $ip, $ua);
+        $result = self::$authService->login($identity, $plain, $ip, $ua);
+
+        $cookieOptions = [
+            'path' => '/',
+            'httponly' => true,
+            'secure' => true, // Solo HTTPS
+            'samesite' => 'Strict'
+        ];
+
         if ($remember) {
-            setcookie('refresh_token', $result['refresh_token'], [
-                'expires' => $result['refresh_expires'],
-                'path' => '/auth',
-                'httponly' => true,
-                'secrue' => true,
-                'samesite' => 'Lax'
-            ]);
-        } else {
-            setcookie('refresh_token', $result['refresh_token'], [
-                'path' => '/auth',
-                'httponly' => true,
-                'secrue' => true,
-                'samesite' => 'Lax'
-            ]);
+            $cookieOptions['expires'] = $result['refresh_expires'];
+
         }
+
+        setcookie('refresh_token', $result['refresh_token'], $cookieOptions);
 
         header('Content-Type: application/json');
         echo json_encode([
@@ -39,6 +44,8 @@ class AuthController {
             'user_id' => $result['user_id']
         ]);
     }
+
+
 
     public function getData(){
         session_start();
@@ -61,11 +68,13 @@ class AuthController {
             }
 
             $_SESSION["login_try"] = 0;
-            $this->login($password, $identity, $remember);
+            $this->login($identity, $password, $remember);
         }
         catch (Throwable $e){
             $_SESSION["login_try"]++;
-            header("Location: " . BASE_URL . "login");
+            http_response_code(401);
+            header('Content-Type: application/json');
+            echo json_encode(['error' => $e->getMessage()]);
             exit;
         }
     }

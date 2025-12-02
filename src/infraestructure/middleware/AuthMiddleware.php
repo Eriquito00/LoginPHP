@@ -15,7 +15,7 @@ class AuthMiddleware
     ) {}
 
     public function handle(string $path) {
-        $normalizedPath = '/' . ltrim($path, '/');
+        $normalizedPath = '/' . $path;
 
         if ($this->isPublic($normalizedPath)) {
             return;
@@ -23,7 +23,7 @@ class AuthMiddleware
 
         $authHeader = $_SERVER["HTTP_AUTHORIZATION"] ?? null;
         if (!$authHeader || !preg_match('/^Bearer\s+(.+)$/i', $authHeader, $m)) {
-            $this->unauthorized('No access token given');
+            $this->unauthorized('No access token given for ' . $path . ' token: ' . $authHeader);
         }
 
         if (isset($m)) {
@@ -50,6 +50,7 @@ class AuthMiddleware
     }
 
     private function isPublic(string $path): bool {
+        if ($path == '/') return true;
         foreach ($this->publicPaths as $prefix) {
             if (str_starts_with($path, $prefix)) {
                 return true;

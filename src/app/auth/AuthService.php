@@ -1,5 +1,5 @@
 <?php
-namespace App\Auth;
+namespace App\App\Auth;
 
 use App\App\Auth\TokenManager;
 use App\App\Exceptions\RefreshTokenInvalidException;
@@ -17,9 +17,9 @@ class AuthService {
 
     public function login(string $identity, string $plain, string $ip, string $ua): array {
         $user = $this->users->getByIdentity($identity);
-
+        
         if(!$user || !$user->verifyPassword($plain)) {
-            throw new WrongCredentialsException("Credenciales invalidas");
+            throw new WrongCredentialsException("Credenciales invalidas" . $plain . " $user");
         }
 
         if (!$user->isActive()) {
@@ -37,7 +37,7 @@ class AuthService {
             "user_id" => $user->getId(),
             "access_token" => $access->jwt,
             "access_expires" => $access->exp,
-            "refresh_token" => $refresh->token,,
+            "refresh_token" => $refresh->token,
             "refresh_expires" => $refresh->exp
         ];
     }
