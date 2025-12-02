@@ -44,7 +44,7 @@ class Router {
                 
                 // Primer paso de la mierdipipeline -> Auth
                 if (self::$authMiddleware !== null) {
-                    self::$authMiddleware->handle('/' . $path);
+                    self::$authMiddleware->handle($path);
                 }
 
                 // Llamada a los controladores

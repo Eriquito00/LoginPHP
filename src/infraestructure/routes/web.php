@@ -1,7 +1,8 @@
 <?php
 
+use App\App\Auth\TokenManager;
+use App\App\Auth\AuthService;
 use App\Infraestructure\Routes\Router;
-
 use App\Controller\HomeController;
 use App\Controller\LoginController;
 use App\Controller\RegisterController;
@@ -9,13 +10,50 @@ use App\Controller\ProfileController;
 use App\Controller\ProfileSettingsController;
 use App\Controller\RecomendationController;
 use App\Controller\AdminController;
+use App\Controller\AuthController;
+use App\Infraestructure\Database\Connection;
+use App\Infraestructure\Middleware\AuthMiddleware;
+use App\Infraestructure\Persistence\RefreshTokenRepositoryPDO;
+use App\Infraestructure\Persistence\UserRepositoryPDO;
+
+$tokenManager = new TokenManager(
+                iss: $_ENV['JWT_ISS'],
+                aud: $_ENV['JWT_AUD'],
+                encrypAlg: $_ENV['JWT_ALG'],           // "HS256"
+                accessTtl: (int) $_ENV['JWT_ACCESS_TTL'],
+                refreshTtlDays: (int) $_ENV['REFRESH_TTL_DAYS'],
+                persistence: new RefreshTokenRepositoryPDO(Connection::getInstance()),  // tu repo inyectado
+                privateKey: null,                // no se usan en HS256
+                publicKey: null,
+                hsSecret: $_ENV['JWT_SECRET'],
+);
+
+$userRepo = new UserRepositoryPDO(Connection::getInstance());
+
+$rtRepo = new RefreshTokenRepositoryPDO(Connection::getInstance());
+
+AuthController::setAuthService(new AuthService($userRepo, $rtRepo, $tokenManager));
+
+Router::setAuthMiddleware(
+    new AuthMiddleware($tokenManager, $userRepo,
+        [
+            // CONFIGURACION DE LAS RUTAS PUBLICAS
+            '/login',
+            '/auth/login',
+            '/auth/refresh',
+            '/register',
+            '/feed',
+            '/profile/setup'
+        ]
+    )
+);
 
 Router::get("/", [HomeController::class, "index"]);
 
 Router::get("/feed", [HomeController::class, "showFeed"]);
 
 Router::get("/login", [LoginController::class, "index"]);
-Router::post("/login", [LoginController::class, "getData"]);
+Router::post("/auth/login", [AuthController::class, "getData"]);
 
 Router::get("/login/forgot-password-data", [LoginController::class, "forgotPasswordData"]);
 Router::post("/login/forgot-password-data", [LoginController::class, "forgotPasswordData"]);
@@ -32,7 +70,7 @@ Router::post("/login/forgot-password", [ProfileSettingsController::class, "setNe
 Router::get("/register", [RegisterController::class, "index"]);
 Router::post("/register", [RegisterController::class, "getData"]);
 
-Router::get("/profile", [ProfileController::class, "index"]);
+Router::get("/profile/:username", [ProfileController::class, "index"]);
 
 Router::get("/profile/setup", [ProfileController::class, "indexProfileSetup"]);
 Router::post("/profile/setup", [ProfileController::class, "userSetup"]);
