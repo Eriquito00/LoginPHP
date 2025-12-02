@@ -19,8 +19,9 @@ class UserService {
     }
 
     public function register($username, $email, $passwordhash){
-        if ($this->dao->getByUsername($username)) throw new UserAlreadyExistsException("Ya existe un usuario con este nombre.");
         $this->tx(function () use ($username, $email, $passwordhash) {
+            if ($this->dao->getByUsername($username)) throw new UserAlreadyExistsException("Ya existe un usuario con este nombre.");
+            if ($this->dao->getByEmail($email)) throw new UserAlreadyExistsException("Email en uso");
             $user = new User;
             $user->init(null,$username, $email, "", $passwordhash);
             $this->dao->create($user);
@@ -45,7 +46,7 @@ class UserService {
     }
 
     private function checkPassword($password){
-        $regex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8}$/";
+        $regex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/";
         $password = trim($password, " ");
 
         return preg_match($regex, $password);

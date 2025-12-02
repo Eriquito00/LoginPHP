@@ -5,10 +5,10 @@ class User {
     private ?int $id = null;
     private string $username;
     private string $email;
-    private string $role;
+    private ?string $role = null;
     private int $role_id;
-    private string $passwordHash;
-    private bool $active;
+    private ?string $password_hash = null;
+    private bool $is_active;
 
     private const AVAILABLE_ROLES = ["user" => 1, "mod" => 2, "admin" => 3];
 
@@ -23,7 +23,7 @@ class User {
      * @param string $username
      * @param string $email
      * @param string $role
-     * @param string $passwordHash
+     * @param string $password_hash
      * 
      * @return void
      */
@@ -32,7 +32,7 @@ class User {
         string $username,
         string $email,
         string $role,
-        string $passwordHash
+        string $password_hash
     ): void {
         $this->id = $id;
         $this->username = $username;
@@ -43,17 +43,17 @@ class User {
         } else {
             $this->role_id = 1;
         }
-        $this->passwordHash = $passwordHash;
-        $this->active = (bool)1;
+        $this->password_hash = $password_hash;
+        $this->is_active = (bool)1;
     }
 
     public function setPassword(string $plain) : void {
-        $this->passwordHash = password_hash($plain, PASSWORD_DEFAULT);
+        $this->password_hash = password_hash($plain, PASSWORD_DEFAULT);
         $plain = str_repeat("\0", strlen($plain));
     }
 
     public function verifyPassword(string $plain) : bool {
-        return password_verify($plain, $this->passwordHash);
+        return password_verify($plain, $this->password_hash);
     }
 
     public function getId() {
@@ -77,11 +77,11 @@ class User {
     }
 
     public function isActive(): bool {
-        return $this->active;
+        return $this->is_active;
     }
 
     public function getPasswordHash() {
-        return $this->passwordHash;
+        return $this->password_hash;
     }
 
     public function __toString() {
