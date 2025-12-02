@@ -45,7 +45,7 @@ class RegisterController {
         }
         catch (InputMismatchError $e){
             $_SESSION["register_try"]++;
-            header("Location: " . BASE_URL . "register");
+            echo($e->getMessage());
             exit;
         }
 
