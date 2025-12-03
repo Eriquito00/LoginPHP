@@ -46,7 +46,7 @@ class AuthMiddleware
             $this->unauthorized('User not available');
         }
 
-        AuthContext::setUser($user);
+        return $user;
     }
 
     private function isPublic(string $path): bool {

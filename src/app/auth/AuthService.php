@@ -7,6 +7,7 @@ use App\App\Exceptions\UserNotAvailableException;
 use App\App\Exceptions\WrongCredentialsException;
 use App\Infraestructure\Persistence\RefreshTokenRepositoryPDO;
 use App\Infraestructure\Persistence\UserRepositoryPDO;
+use App\Model\Entities\PublicUser;
 
 class AuthService {
     public function __construct(
@@ -40,6 +41,41 @@ class AuthService {
             "refresh_token" => $refresh->token,
             "refresh_expires" => $refresh->exp
         ];
+    }
+
+    public function isAuthenticated() : bool {
+        $refreshToken = $_COOKIE["refresh_token"] ?? null;
+
+        if(!$refreshToken) {
+            return false;
+        }
+
+        $record = $this->refreshTokens->findActiveByToken($refreshToken);
+        
+        return $record !== null;
+    }
+
+    public function getCurrentUser(): ?PublicUser {
+        $refreshToken = $_COOKIE['refresh_token'] ?? null;
+        
+        if (!$refreshToken) {
+            return null;
+        }
+
+        $record = $this->refreshTokens->findActiveByToken($refreshToken);
+        
+        if (!$record) {
+            return null;
+        }
+
+        $privateUser = $this->users->get((int)$record->user_id);
+        $parsedUser = new PublicUser(
+            $privateUser->getId(),
+            $privateUser->getUsername(),
+            $privateUser->getEmail(),
+            $privateUser->getRole()
+        );
+        return $parsedUser;
     }
 
     public function refresh(string $refreshToken, string $ip, string $ua): array {

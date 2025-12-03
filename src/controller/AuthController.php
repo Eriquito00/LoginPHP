@@ -15,6 +15,10 @@ class AuthController {
         return self::$authService;
     }
 
+    public static function getAuthService(): ?AuthService {
+        return self::$authService;
+    }
+
     public function __construct() {}
     
     public function login(string $identity, string $plain, string $remember) {
