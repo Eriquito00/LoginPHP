@@ -21,7 +21,7 @@
     padding: 0;
     margin: 0;
     flex: 1;
-    max-height: calc(100vh - 100px);
+    max-height: max-content;
     overflow-y: auto;
     scrollbar-width: thin;
 }
@@ -40,6 +40,35 @@
 }
 
 .nav_list button:hover {
+    background: rgb(58, 64, 80);
+}
+
+.footer_user {
+    display: flex;
+    padding: 10px;
+    background-color: rgb(35, 39, 47);
+    border-radius: 10px;
+    margin: 0 10px;
+}
+
+.footer_user_img {
+    aspect-ratio: 1 / 1;
+    border-radius: 100%;
+    height: 60px;
+}
+
+.footer_user_username {
+    font-size: 1rem;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin: 0 10px;
+    padding: 0 0 5px 0;
+    color: white;
+}
+
+.footer_user button:hover {
     background: rgb(58, 64, 80);
 }
 
@@ -73,8 +102,8 @@
     }
 }
 
-@media (max-width: 650px) {
+@media (max-width: 700px) {
     .nav_aside {
-        top: 100px;
+        top: 120px;
     }
 }

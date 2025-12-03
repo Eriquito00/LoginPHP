@@ -9,7 +9,7 @@
         <input class="filter" id="search" type="search" placeholder="Encuentra a tu autor favorito">
     </div>
     <div class="header_buttons">
-        <button class="create_button">Create<img src="./assets/plus.png" alt="Create Recomendation"></button>
+        <a href="profile/create" class="create_button">Create<img src="./assets/plus.png" alt="Create Recomendation"></a>
         <select id="sentido" class="filter">
             <option value="asc">ASC</option>
             <option value="desc" selected>DESC</option>
