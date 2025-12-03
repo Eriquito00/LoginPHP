@@ -70,10 +70,10 @@ Router::post("/login/forgot-password", [ProfileSettingsController::class, "setNe
 Router::get("/register", [RegisterController::class, "index"]);
 Router::post("/register", [RegisterController::class, "getData"]);
 
-Router::get("/profile/user/:username", [ProfileController::class, "index"]);
-
 Router::get("/profile/setup", [ProfileController::class, "indexProfileSetup"]);
 Router::post("/profile/setup", [ProfileController::class, "userSetup"]);
+
+Router::get("/profile/:username", [ProfileController::class, "index"]);
 
 Router::get("/profile/create", [RecomendationController::class, "indexCreate"]);
 Router::get("/profile/update/:id", [RecomendationController::class, "indexUpdate"]);
