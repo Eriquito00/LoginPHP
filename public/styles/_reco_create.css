@@ -1,11 +1,6 @@
-body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-}
-
-form {
+.form_create_reco {
+    display: none;
+    position: absolute;
     box-shadow: 0 0 2px white;
     width: 40%;
     border-radius: 10px;
@@ -15,11 +10,11 @@ form {
     align-items: center;
 }
 
-label, textarea, input[type="text"], input[type="file"], input[type="file"]::file-selector-button {
+.form_labels, .form_textarea_text, input[type="text"], input[type="file"], input[type="file"]::file-selector-button {
     font-size: 0.7rem;
 }
 
-img {
+.form_image {
     aspect-ratio: 1 / 1;
     object-fit: cover;
     min-width: 150px;
@@ -28,11 +23,11 @@ img {
     max-height: 200px;
 }
 
-input[type="text"], button {
+input[type="text"], .form_button {
     max-height: 35px;
 }
 
-button[type="submit"], button[type="button"] {
+.form_button {
     font-size: 0.7rem;
     line-height: 0;
     width: 50%;
@@ -52,25 +47,25 @@ button[type="submit"], button[type="button"] {
     flex-direction: row;
 }
 
-textarea {
+.form_textarea_text {
     resize: none;
     height: 200px;
 }
 
 @media (max-width: 1500px) {
-    form {
+    .form_create_reco {
         width: 50%;
     }
 }
 
 @media (max-width: 1000px) {
-    form {
+    .form_create_reco {
         width: 60%;
     }
 }
 
 @media (max-width: 600px) {
-    form {
+    .form_create_reco {
         width: 70%;
     }
 }

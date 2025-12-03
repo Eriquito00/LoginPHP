@@ -5,7 +5,7 @@ class RecomendationController {
     private $recomendationid = "";
 
     public function indexCreate(){
-        require_once(__DIR__ . "/../view/recomendation_data.php");
+        require_once(__DIR__ . "/../view/components/_reco_create.php");
     }
 
     public function indexUpdate(){
