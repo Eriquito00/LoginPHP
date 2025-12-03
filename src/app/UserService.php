@@ -23,7 +23,7 @@ class UserService {
             if ($this->dao->getByUsername($username)) throw new UserAlreadyExistsException("Ya existe un usuario con este nombre.");
             if ($this->dao->getByEmail($email)) throw new UserAlreadyExistsException("Email en uso");
             $user = new User;
-            $user->init(null,$username, $email, "", $passwordhash);
+            $user->init(null,$username, $email, 1, $passwordhash);
             $this->dao->create($user);
         });
     }
