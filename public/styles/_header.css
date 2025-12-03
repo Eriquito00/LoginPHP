@@ -1,12 +1,16 @@
+:root {
+    --header-height: 80px;
+}
+
 .feed_search {
-    position: sticky;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     display: grid;
     grid-template-columns: 20% 60% 20%;
     width: 100%;
-    height: 80px;
+    height: var(--header-height);
     z-index: 100;
     background: rgba(24, 28, 34, 0.8);
     backdrop-filter: blur(2px);
@@ -92,6 +96,8 @@
     border: none;
     padding: 0;
     margin: 0 10px;
+    color: white;
+    text-decoration: none;
 }
 
 .create_button img {
@@ -101,6 +107,10 @@
 
 .btn_nav {
     display: none;
+}
+
+.main_content {
+    margin-top: var(--header-height);
 }
 
 @media (max-width: 1400px) {
@@ -156,6 +166,10 @@
 }
 
 @media (max-width: 700px) {
+    :root {
+        --header-height: 120px;
+    }
+
     .btn_title {
         display: none;
     }
@@ -166,7 +180,6 @@
 
     .feed_search {
         grid-template-columns: 100%;
-        height: 120px;
     }
 
     .filter, .btn_navigation, input[type="search"], .create_button {
