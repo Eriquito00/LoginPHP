@@ -1,13 +1,27 @@
-.form_create_reco {
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 20;
     display: none;
-    position: absolute;
-    box-shadow: 0 0 2px white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.form_create_reco {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(35, 39, 47);
     width: 40%;
-    border-radius: 10px;
-    margin: 20px;
+    border-radius: 5px;
     padding: 20px;
-    justify-content: center;
-    align-items: center;
+    z-index: 21;
 }
 
 .form_labels, .form_textarea_text, input[type="text"], input[type="file"], input[type="file"]::file-selector-button {
@@ -30,9 +44,6 @@ input[type="text"], .form_button {
 .form_button {
     font-size: 0.7rem;
     line-height: 0;
-    width: 50%;
-    margin-left: 10px;
-    margin-right: 10px;
 }
 
 .div_img {
@@ -43,13 +54,37 @@ input[type="text"], .form_button {
 }
 
 .div_buttons {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 10px;
+    box-sizing: border-box;
 }
 
 .form_textarea_text {
     resize: none;
     height: 200px;
+}
+
+body.no-scroll {
+    overflow: hidden;
+}
+
+.backdrop.show {
+    display: block;
+    opacity: 1;
+}
+
+#btnMenuRecoClose {
+    background-color: maroon;
+    border: none;
+    box-shadow: none;
+}
+
+#btnMenuRecoClose:hover {
+    background-color: red;
 }
 
 @media (max-width: 1500px) {
