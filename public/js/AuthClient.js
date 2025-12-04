@@ -4,11 +4,15 @@ export class AuthClient {
         this.tokenExpiry = localStorage.getItem('token_expires');
     }
 
-    async login(identity, password, remember = false) {
+    async login(identity, password, remember = false, recaptchaToken = null) {
         const formData = new FormData();
         formData.append('email', identity);
         formData.append('password', password);
         formData.append('remember', remember);
+
+        if (recaptchaToken) {
+            formData.append('g-recaptcha-response', recaptchaToken);
+        }
 
         const response = await fetch(document.baseURI + 'auth/login', {
             method: 'POST',
@@ -18,13 +22,17 @@ export class AuthClient {
 
         if (!response.ok) {
             let errorMessage = `Error ${response.status}`;
+            const responseText = await response.text();
+
             try {
-                const errorData = await response.json();
-                errorMessage = errorData.message || errorData.error || errorMessage;
+                const errorData = JSON.parse(responseText);
+                // Pasar el JSON completo como mensaje para que LoginFormData lo parsee
+                errorMessage = JSON.stringify(errorData);
             } catch (e) {
-                errorMessage = await response.text() || errorMessage;
+                errorMessage = responseText || errorMessage;
             }
-            throw new Error(response.status + ':' + errorMessage);
+            
+            throw new Error(errorMessage);
         }
 
         const data = await response.json();
