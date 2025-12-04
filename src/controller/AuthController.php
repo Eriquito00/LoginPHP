@@ -2,6 +2,8 @@
 namespace App\Controller;
 
 use App\App\Auth\AuthService;
+use App\App\Exceptions\UserNotAvailableException;
+use App\App\Exceptions\WrongCredentialsException;
 use App\Helpers\Recaptcha;
 use Throwable;
 
@@ -49,8 +51,6 @@ class AuthController {
         ]);
     }
 
-
-
     public function getData(){
         session_start();
         $identity = $_POST["email"] ?? null;
@@ -63,22 +63,40 @@ class AuthController {
 
         try {
             if ($_SESSION["login_try"] >= 3){
-                $recaptcha = new Recaptcha($_SERVER["REMOTE_ADDR"], $_POST["g-recaptcha-response"]);
+                $recaptcha = new Recaptcha($_SERVER["REMOTE_ADDR"], $_POST["g-recaptcha-response"] ?? '');
                 if (!$recaptcha->verifyRecaptcha()){
                     $_SESSION["login_try"]++;
-                    header("Location: " . BASE_URL . "login");
+                    http_response_code(403);
+                    header('Content-Type: application/json');
+                    echo json_encode([
+                        'success' => false, 
+                        'error' => 'Please complete the reCAPTCHA',
+                        'requires_reload' => false
+                    ]);
                     exit;
                 }
             }
 
-            $_SESSION["login_try"] = 0;
             $this->login($identity, $password, $remember);
+            $_SESSION["login_try"] = 0;
         }
-        catch (Throwable $e){
+        catch (WrongCredentialsException | UserNotAvailableException $e){
             $_SESSION["login_try"]++;
             http_response_code(401);
             header('Content-Type: application/json');
-            echo json_encode(['error' => $e->getMessage()]);
+            echo json_encode([
+                'success' => false,
+                'error' => $e->getMessage(),
+                'requires_reload' => $_SESSION["login_try"] >= 3, // ← Recargar si alcanza 3
+                'try' => $_SESSION["login_try"]
+            ]);
+            exit;
+        }
+        catch (Throwable $e){
+            $_SESSION["login_try"]++;
+            http_response_code(500);
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'An unexpected error occurred']);
             exit;
         }
     }

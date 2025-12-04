@@ -10,6 +10,9 @@ use App\Infraestructure\Persistence\UserRepositoryPDO;
 use App\Model\Entities\PublicUser;
 
 class AuthService {
+    public ?PublicUser $cachedUser = null;
+    private ?string $cachedTokenHash = null;
+
     public function __construct(
         private UserRepositoryPDO $users,
         private RefreshTokenRepositoryPDO $refreshTokens,
@@ -20,7 +23,7 @@ class AuthService {
         $user = $this->users->getByIdentity($identity);
         
         if(!$user || !$user->verifyPassword($plain)) {
-            throw new WrongCredentialsException("Credenciales invalidas" . $plain . " $user");
+            throw new WrongCredentialsException("Credenciales invalidas");
         }
 
         if (!$user->isActive()) {
@@ -59,7 +62,17 @@ class AuthService {
         $refreshToken = $_COOKIE['refresh_token'] ?? null;
         
         if (!$refreshToken) {
-            return null;
+            return $this->clearCache();
+        }
+
+        $currentHash = hash('sha256', $refreshToken);
+
+        if ($this->cachedTokenHash != $currentHash) {
+            $this->clearCache();
+        }
+
+        if ($this->cachedUser != null) {
+            return $this->cachedUser;
         }
 
         $record = $this->refreshTokens->findActiveByToken($refreshToken);
@@ -69,12 +82,20 @@ class AuthService {
         }
 
         $privateUser = $this->users->get((int)$record->user_id);
+        
+        if (!$privateUser || !$privateUser->isActive()) {
+            return null;
+        }
+
         $parsedUser = new PublicUser(
             $privateUser->getId(),
             $privateUser->getUsername(),
             $privateUser->getEmail(),
             $privateUser->getRole()
         );
+
+        $this->cacheUser($parsedUser, $currentHash);
+
         return $parsedUser;
     }
 
@@ -101,6 +122,17 @@ class AuthService {
             'refresh_expires' => $newRefresh->exp,
         ];
     }
+
+    private function cacheUser(PublicUser $u, string $tokenHash) {
+        $this->cachedUser = $u;
+        $this->cachedTokenHash = $tokenHash;
+    }
+
+    public function clearCache() : null {
+        $this->cachedUser = null;
+        $this->cachedTokenHash = null;
+        return null;
+    }  
 
     public function logout(?string $refreshToken): void
     {
