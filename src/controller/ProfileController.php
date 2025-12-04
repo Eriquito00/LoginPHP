@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\App\Auth\AuthService;
 use App\App\UserService;
 use App\Infraestructure\Persistence\UserRepositoryPDO;
 use App\Infraestructure\Database\Connection as DatabaseConnection;
@@ -24,7 +25,7 @@ class ProfileController {
         session_start();
         $username = $_POST["username"] ?? null;
 
-        $userServ = new UserService(new UserRepositoryPDO(DatabaseConnection::getInstance()), DatabaseConnection::getInstance());
+        $userServ = new UserService(new UserRepositoryPDO(DatabaseConnection::getInstance()), DatabaseConnection::getInstance(), AuthController::getAuthService());
         $userServ->register($username, $_SESSION["registerEmail"], $_SESSION["registerPassword"]);
         
         require_once(__DIR__ . "/../view/profile.php");
