@@ -40,7 +40,7 @@ class CriteriaRecomendation {
         }
     }
 
-    private function normalizeString(string $str) : string | null{
+    private function normalizeString(string $str) : string {
         $r = $str == null ? '' : trim($str);
         return $r === '' ? '' : $r;
     }

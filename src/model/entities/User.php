@@ -5,11 +5,12 @@ class User {
     private ?int $id = null;
     private string $username;
     private string $email;
-    private string $role;
+    private ?string $role = null;
     private int $role_id;
-    private string $passwordHash;
+    private ?string $password_hash = null;
+    private bool $is_active;
 
-    private const AVAILABLE_ROLES = ["user" => 1, "mod" => 2, "admin" => 3];
+    private const AVAILABLE_ROLES = ["1" => "user", "2" => "mod", "3" => "admin"];
 
     /**
      * Constructor vacio para PDO::FETCH_CLASS
@@ -21,8 +22,8 @@ class User {
      * @param int|null $id
      * @param string $username
      * @param string $email
-     * @param string $role
-     * @param string $passwordHash
+     * @param int $role_id
+     * @param string $password_hash
      * 
      * @return void
      */
@@ -30,28 +31,35 @@ class User {
         ?int $id,
         string $username,
         string $email,
-        string $role,
-        string $passwordHash
+        int $role_id,
+        string $password_hash = ""
     ): void {
         $this->id = $id;
         $this->username = $username;
         $this->email = $email;
-        $this->role = $role;
-        if (!empty(self::AVAILABLE_ROLES[$role])) {
-            $this->role_id = self::AVAILABLE_ROLES[$role];
-        } else {
-            $this->role_id = 1;
-        }
-        $this->passwordHash = $passwordHash;
+        $this->role_id = $role_id;
+        $this->resolveRole();
+        $this->password_hash = $password_hash;
+        $this->is_active = (bool)1;
     }
 
+
     public function setPassword(string $plain) : void {
-        $this->passwordHash = password_hash($plain, PASSWORD_DEFAULT);
+        $this->password_hash = password_hash($plain, PASSWORD_DEFAULT);
         $plain = str_repeat("\0", strlen($plain));
     }
 
     public function verifyPassword(string $plain) : bool {
-        return password_verify($plain, $this->passwordHash);
+        return password_verify($plain, $this->password_hash);
+    }
+
+    private function resolveRole(): void {
+        if ($this->role_id != null && isset(self::AVAILABLE_ROLES[$this->role_id])) {
+            $this->role = self::AVAILABLE_ROLES[$this->role_id];
+        } else {
+            $this->role_id = 1;
+            $this->role = "user";
+        }
     }
 
     public function getId() {
@@ -66,16 +74,24 @@ class User {
         return $this->email;
     }
 
-    public function getRole() {
-        return $this->role;
+    public function getRole(): string {
+        // Lazy loading: si role es null pero role_id existe, lo resolvemos
+        if ($this->role == null && $this->role_id != null) {
+            $this->resolveRole();
+        }
+        return $this->role ?? 'user';
     }
 
     public function getRoleId() {
         return $this->role_id;
     }
 
+    public function isActive(): bool {
+        return $this->is_active;
+    }
+
     public function getPasswordHash() {
-        return $this->passwordHash;
+        return $this->password_hash;
     }
 
     public function __toString() {

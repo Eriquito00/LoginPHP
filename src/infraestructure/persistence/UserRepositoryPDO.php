@@ -24,7 +24,7 @@ class UserRepositoryPDO implements UserRepo {
         try {
             $pdo = $this->connection->getConnection();
             $stmt = $pdo->prepare('
-                INSERT INTO users(username, email, role_id, password)
+                INSERT INTO users(username, email, role_id, password_hash)
                     VALUES(:username, :email, :role_id, :passwordHash);
             ');
             $stmt->execute([
@@ -96,7 +96,9 @@ class UserRepositoryPDO implements UserRepo {
                 SELECT * FROM users WHERE email = :email;
             ');
             $stmt->execute([":email" => $email]);
-            return $stmt->fetchObject(User::class);
+            $result = $stmt->fetchObject(User::class);
+            if (!$result) return null;
+            return $result;
         } catch (PDOException $e) {
             throw new DBErrorException("Internal Server Error: " . $e->getMessage());
         }
@@ -109,6 +111,21 @@ class UserRepositoryPDO implements UserRepo {
                 SELECT * FROM users WHERE username = :username;
             ');
             $stmt->execute([":username" => $username]);
+            $result = $stmt->fetchObject(User::class);
+            if (!$result) return null;
+            return $result;
+        } catch (PDOException $e) {
+            throw new DBErrorException("Internal Server Error: " . $e->getMessage());
+        }
+    }
+
+    public function getByIdentity(string $identity): ?User {
+        try {
+            $pdo = $this->connection->getConnection();
+            $stmt = $pdo->prepare('
+                SELECT * FROM users WHERE email = :identity1 OR username = :identity2;
+            ');
+            $stmt->execute([":identity1" => $identity, ":identity2" => $identity]);
             $result = $stmt->fetchObject(User::class);
             if (!$result) return null;
             return $result;
