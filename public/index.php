@@ -8,6 +8,7 @@ $dir = str_replace('\\', '/', __DIR__);
 $basePath = str_replace($documentRoot, '', $dir);
 $host = $_SERVER["HTTP_HOST"];
 define('BASE_URL', "http://$host$basePath/");
+//UNA NUEVA CONSTANTE CON LA RUTA HASTA ANTES DE PUBLIC
 
 require_once __DIR__ . "/../vendor/autoload.php";
 require_once __DIR__ . "/../src/infraestructure/routes/web.php";
