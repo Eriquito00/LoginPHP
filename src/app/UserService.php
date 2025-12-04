@@ -2,6 +2,7 @@
 
 namespace App\App;
 
+use App\App\Auth\AuthService;
 use App\Application\Exceptions\UserAlreadyExistsException;
 use App\Controller\Exceptions\InputMismatchError;
 use App\Infraestructure\Database\Connection as DatabaseConnection;
@@ -11,11 +12,13 @@ use Exception;
 
 class UserService {
     private UserRepositoryPDO $dao;
+    private AuthService $auth;
     private DatabaseConnection $con;
 
-    public function __construct($dao, $con){
+    public function __construct($dao, $con, $auth){
         $this->dao = $dao;
         $this->con = $con;
+        $this->auth = $auth;
     }
 
     public function register($username, $email, $passwordhash){
@@ -26,6 +29,16 @@ class UserService {
             $user->init(null,$username, $email, 1, $passwordhash);
             $this->dao->create($user);
         });
+    }
+
+    public function updateProfile(int $userId, array $data): void {
+        // FALTA IMPLEMENTAR COSAS, PERO ESTO QUIERO QUE ESTE YA
+        
+        // Invalidar cache
+        $currentUser = $this->auth->getCurrentUser();
+        if ($currentUser && $currentUser->id === $userId) {
+            $this->auth->clearCache(); // ← Forzar recarga
+        }
     }
 
     public function verifyRegister($email, $password, $repeat_password){
