@@ -1,5 +1,9 @@
 <?php
+
 namespace App\Helpers;
+
+use App\Helpers\Exceptions\InvalidImageFormatException;
+use App\Helpers\Exceptions\ErrorSavingImageException;
 
 class InputImage {
     /**
@@ -14,16 +18,16 @@ class InputImage {
         $tiposPermitidos = ['image/png', 'image/jpeg', 'image/webp'];
 
         if (!in_array($image['type'], $tiposPermitidos)) {
-            //tirar una excepcion de tipo InvalidImageFormatException
+            throw new InvalidImageFormatException("El formato de la imagen no esta entre los formatos permitidos.");
         }
 
         $ext = strtolower(pathinfo($image['name'], PATHINFO_EXTENSION));
 
         if (!in_array($ext, ['png', 'jpg', 'jpeg', 'webp'])) {
-            //tirar una excepcion de tipo InvalidImageFormatException
+            throw new InvalidImageFormatException("El formato de la imagen no esta entre los formatos permitidos.");
         }
 
-        $folderDest = "../uploads/" . $imageTypes[$typeImage];
+        $folderDest = BASE_PATH . "/uploads/" . $imageTypes[$typeImage];
         if (!file_exists($folderDest)) {
             mkdir($folderDest, 0777, true);
         }
@@ -33,7 +37,7 @@ class InputImage {
         $rutaFinal = $folderDest . "/" . $imgName;
 
         if (!move_uploaded_file($image['tmp_name'], $rutaFinal)) {
-            //tirar una excepcion de tipo ErrorSavingImageException
+            throw new ErrorSavingImageException("Error al guardar la imagen.");
         }
 
         return "uploads/" . $imageTypes[$typeImage] . "/" . $imgName;
