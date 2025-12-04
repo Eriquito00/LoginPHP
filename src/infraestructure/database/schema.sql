@@ -7,24 +7,42 @@ CREATE TABLE IF NOT EXISTS roles (
 );
 
 CREATE TABLE IF NOT EXISTS users (
-    id              INT AUTO_INCREMENT PRIMARY KEY,
+    id              BIGINT AUTO_INCREMENT PRIMARY KEY,
     username        VARCHAR(50) NOT NULL,
     email           VARCHAR(100) NOT NULL,
     role_id         INT NOT NULL,
-    password        VARCHAR(255) NOT NULL,
+    password_hash   VARCHAR(255) NOT NULL,
+    created_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    last_login_at TIMESTAMP NULL DEFAULT NULL,
+    is_active TINYINT(1) NOT NULL DEFAULT 1,
     CONSTRAINT uk_users_email UNIQUE (email),
     CONSTRAINT uk_users_username UNIQUE (username),
     CONSTRAINT fk_users_roles FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
 CREATE TABLE IF NOT EXISTS recomendations (
-    id    INT AUTO_INCREMENT PRIMARY KEY,
-    user_id             INT NOT NULL,
+    id    BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id             BIGINT NOT NULL,
     title               VARCHAR(50) NOT NULL,
     description         TEXT NOT NULL,
     image_url           VARCHAR(255),
     created_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_recomendations_users FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS refresh_tokens (
+    id              BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id         BIGINT NOT NULL,
+    token_hash      CHAR(64) NOT NULL,
+    created_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    expires_at      TIMESTAMP NOT NULL,
+    revoked_at      TIMESTAMP NULL,
+    ip              VARCHAR(45) NULL,
+    user_agent      VARCHAR(255) NULL,
+    CONSTRAINT fk_rt_user FOREIGN KEY (user_id) REFERENCES users(id),
+    INDEX idx_rt_user (user_id),
+    INDEX idx_rt_valid (user_id, revoked_at, expires_at)
 );
 
 CREATE INDEX idx_recomendations_user_created

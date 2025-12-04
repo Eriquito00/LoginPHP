@@ -2,12 +2,12 @@ USE mardb;
 
 INSERT INTO roles (role_name) VALUES ('admin'), ('user'), ('moderator');
 
-INSERT INTO users (username, email, role_id, password) VALUES
-('admin', 'admin@example.com', 1, 'adminpass'),
-('user1', 'user1@example.com', 2, 'user1pass'),
-('user2', 'user2@example.com', 2, 'user2pass'),
-('mod1', 'mod1@example.com', 3, 'mod1pass'),
-('user3', 'user3@example.com', 2, 'user3pass');
+INSERT INTO users (username, email, role_id, password_hash) VALUES
+('admin', 'admin@example.com', 1, '$2a$12$UR831vdVvc9bLJMz5io2UOH58D6PggzuB7z7Iv2YyKJIi35rJpoYy'),
+('user1', 'user1@example.com', 2, '$2a$12$mxNaFvS./Ku186RRZNvWQep6w1XJQWU34vU.gGs7e4Vk3IFo1h4ky'),
+('user2', 'user2@example.com', 2, '$2a$12$Hhp5vTCN73MsllUDIFcGzO691GadWfJXAil0oY1bQOxc8r2PHYKwa'),
+('mod1', 'mod1@example.com', 3, '$2a$12$xdx6hXmZnU3rpR9HSrkoGuvWmiArN5zFwfOSQHc/16iK9AYUU/W5W'),
+('user3', 'user3@example.com', 2, '$2a$12$skGHf3w5i6KOGtKFvQ.bUujZ2NIppzY2ckXO8CmVT/HRcZDsEN9ti');
 
 INSERT INTO recomendations (user_id, title, description, image_url) VALUES
 (2, 'Recomendación 1', 'Descripción de la recomendación 1', 'img1.jpg');

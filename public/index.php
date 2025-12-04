@@ -1,6 +1,14 @@
 <?php
 
 use App\Infraestructure\Database\Connection;
+use App\Infraestructure\Exceptions\DBErrorException;
+use Dotenv\Dotenv;
+use App\Infraestructure\Routes\Router;
+
+require_once __DIR__ . "/../vendor/autoload.php";
+
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
 
 $documentRoot = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']);
 $dir = str_replace('\\', '/', __DIR__);
@@ -10,16 +18,12 @@ $host = $_SERVER["HTTP_HOST"];
 define('BASE_URL', "http://$host$basePath/");
 //UNA NUEVA CONSTANTE CON LA RUTA HASTA ANTES DE PUBLIC
 
-require_once __DIR__ . "/../vendor/autoload.php";
-require_once __DIR__ . "/../src/infraestructure/routes/web.php";
-
-use Dotenv\Dotenv;
-use App\Infraestructure\Routes\Router;
-
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
-$dotenv->load();
-
-$connection = new Connection();
-
-Router::dispatch($_SERVER["REQUEST_METHOD"]);
+try {
+    $connection = new Connection();
+    require_once __DIR__ . "/../src/infraestructure/routes/web.php";
+    Router::dispatch($_SERVER["REQUEST_METHOD"]);
+} catch(DBErrorException $e) {
+    http_response_code(500);
+    echo(500 . " Internal server error: " . $e->getMessage());
+}
 ?>
