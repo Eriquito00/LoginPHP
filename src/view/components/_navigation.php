@@ -1,8 +1,10 @@
 <?php
-// Al inicio de cualquier vista
-//$authService = AuthController::getAuthService();
-//$isLogged = $authService ? $authService->isAuthenticated() : false;
-//$currentUser = $isLogged ? $authService->getCurrentUser() : null;
+
+use App\Controller\AuthController;
+
+$authService = AuthController::getAuthService();
+$isLogged = $authService ? $authService->isAuthenticated() : false;
+$currentUser = $isLogged ? $authService->getCurrentUser() : null;
 ?>
 <link rel="stylesheet" href="./styles/_navigation.css">
 <script defer src="./js/Navigation.js"></script>
@@ -12,7 +14,7 @@
         <li><a href="login/forgot-password"><button>Passoword</button></a></li>
         <li><a href="admin/users"><button>Admin Users</button></a></li>
     </ul>
-    <?php //if($isLogged): ?>
+    <?php if(!$isLogged): ?>
     <footer class="footer_user">
         <div class="footer_user_content">
             <img class="footer_user_img" src="./assets/moai.jpg" alt="Foto de perfil">
@@ -26,12 +28,11 @@
             </ul>
         </div>
     </footer>
-    <!--
-    <?php //else: ?>
+    <?php else: ?>
     <footer class="footer_user">
         <div class="footer_user_content">
             <img class="footer_user_img" src="https://ih1.redbubble.net/image.5195043568.7951/st,small,507x507-pad,600x600,f8f8f8.jpg" alt="Foto de perfil">
-            <p class="footer_user_username">username</p>
+            <p class="footer_user_username"><?= $currentUser->username ?></p>
         </div>
         
         <div class="footer_dropdown">
@@ -41,6 +42,5 @@
             </ul>
         </div>
     </footer>
-    <?php //endif; ?>
-    -->
+    <?php endif; ?>
 </aside>

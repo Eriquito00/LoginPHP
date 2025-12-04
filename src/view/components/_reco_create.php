@@ -1,3 +1,12 @@
+<?php
+
+use App\Controller\AuthController;
+
+$authService = AuthController::getAuthService();
+$isLogged = $authService ? $authService->isAuthenticated() : false;
+$currentUser = $isLogged ? $authService->getCurrentUser() : null;
+?>
+
 <link rel="stylesheet" href="./styles/_reco_create.css">
 <script defer src="./js/ImportImage.js"></script>
 <div id="formMenuReco" class="backdrop">
