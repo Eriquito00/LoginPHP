@@ -18,7 +18,7 @@ $showRecaptcha = $_SESSION["login_try"] >= 3;
     <?php endif; ?>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <link rel="stylesheet" href="./styles/loginregister.css">
-    <script type="module" src="./js/LoginFormData.js"></script>
+    <script type="module" src="./js/ajax/LoginData.js"></script>
 </head>
 <body>
     <form method="POST" id="loginForm" action="auth/login">
