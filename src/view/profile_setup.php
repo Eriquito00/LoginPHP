@@ -14,11 +14,11 @@
         <div class="div-image">
             <label for="image">Foto de perfil</label>
             <img id="preview" src="./assets/moai.jpg" alt="Imagen por defecto">
-            <input id="image" type="file">
+            <input id="image" type="file" name="image">
         </div>
         <div class="div-username">
             <label for="username">Username</label>
-            <input name="username" type="text" placeholder="Introduce tu username" required>
+            <input id="username" name="username" type="text" placeholder="Introduce tu username" required />
         </div>
         <div class="div-button">
             <button type="submit">Crear perfil</button>

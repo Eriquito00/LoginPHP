@@ -8,7 +8,7 @@
         <li><a href="profile"><button>Profile</button></a></li>
         <li><a href="profile/settings"><button>Profile/Settings</button></a></li>
         <li><a href="profile/create"><button>Create Reco</button></a></li>
-        <li><a href="login/forgot-password"><button>Passoword</button></a></li>
+        <li><a href="login/forgot-password"><button>Password</button></a></li>
         <li><a href="admin/users"><button>Admin Users</button></a></li>
     </ul>
 </aside>
