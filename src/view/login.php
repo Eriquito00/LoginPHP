@@ -29,7 +29,7 @@ $showRecaptcha = $_SESSION["login_try"] >= 3;
         </div>
 
         <div>
-            <label for="email">Contraseña</label>
+            <label for="password">Contraseña</label>
             <input name="password" id="password" type="password" minlength="8" placeholder="Minimum 8 characters" required>
         </div>
         <div class="rembember div_rem_passwd">

@@ -13,9 +13,9 @@
         <h1>Cambio de contraseña</h1>
         <p>Introduce la nueva contraseña para tu cuenta.</p>
         <label for="password">Password</label>
-        <input type="password" name="password" minlength="8" placeholder="Introduce tu nueva contraseña" required>
+        <input id="password" type="password" name="password" minlength="8" placeholder="Introduce tu nueva contraseña" required>
         <label for="repeat_password">Repite la contraseña</label>
-        <input type="password" name="repeat_password" minlength="8" placeholder="Repite tu nueva contraseña" required>
+        <input id="repeat_password" type="password" name="repeat_password" minlength="8" placeholder="Repite tu nueva contraseña" required>
         <button type="submit" name="action" value="">Guardar</button>
     </form>
 </body>
