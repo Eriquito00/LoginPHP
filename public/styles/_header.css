@@ -85,6 +85,10 @@
     padding: 0px;
 }
 
+input[type="search"]::-webkit-search-cancel-button {
+    margin-right: 15px;
+}
+
 .create_button {
     display: flex;
     flex-direction: row;
@@ -117,7 +121,7 @@
     transform: skew(30deg);
     transition: all 0.3s ease;
     position: absolute;
-    left: -25px;
+    left: -50px;
 }
 
 .create_button:hover::before {

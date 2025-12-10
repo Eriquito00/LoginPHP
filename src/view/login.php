@@ -27,12 +27,12 @@ $showRecaptcha = $_SESSION["login_try"] >= 3;
     <form class="log_reg_form" method="POST" id="loginForm" action="auth/login">
         <h1 class="log_reg_title">Login</h1>
         <div>
-            <label class="log_reg_label" for="email">Email</label>
+            <label class="log_reg_label log_reg_lab_inp" for="email">Email</label>
             <input class="log_reg_input log_reg_shadow" name="email" id="email" type="text" placeholder="email@example.com" required>
         </div>
 
         <div>
-            <label class="log_reg_label" for="password">Contraseña</label>
+            <label class="log_reg_label log_reg_lab_inp" for="password">Contraseña</label>
             <input class="log_reg_input log_reg_shadow" name="password" id="password" type="password" minlength="8" placeholder="Minimum 8 characters" required>
         </div>
         <div class="div_rem_passwd">
@@ -46,7 +46,7 @@ $showRecaptcha = $_SESSION["login_try"] >= 3;
         <p id="error-message"></p>
 
         <?php if ($showRecaptcha): ?>
-            <div class='g-recaptcha' data-sitekey="<?= $_ENV['RECAPTCHA_SITE_KEY'] ?>"></div>
+            <div class='g-recaptcha' aria-label="recaptcha" data-sitekey="<?= $_ENV['RECAPTCHA_SITE_KEY'] ?>"></div>
         <?php endif; ?>
 
         <button class="log_reg_submit" type="submit">LOGIN</button>
@@ -54,19 +54,19 @@ $showRecaptcha = $_SESSION["login_try"] >= 3;
         <p class="log_separation">- o -</p>
 
         <div class="log_oauth">
-            <button class="log_container">
+            <button class="log_container" type="button">
                 <img class="log_oauth_img" src="./assets/google.webp" alt="Google logo">
-                <p>Login with Google</p>
+                <p class="log_oauth_p">Login with Google</p>
             </button>
 
-            <button class="log_container">
+            <button class="log_container" type="button">
                 <img class="log_oauth_img" src="./assets/facebook.webp" alt="Facebook logo">
-                <p>Login with Facebook</p>
+                <p class="log_oauth_p">Login with Facebook</p>
             </button>
 
-            <button class="log_container">
+            <button class="log_container" type="button">
                 <img class="log_oauth_img" src="./assets/microsoft.webp" alt="Microsoft Logo">
-                <p>Login with Microsoft</p>
+                <p class="log_oauth_p">Login with Microsoft</p>
             </button>
         </div>
     </form>

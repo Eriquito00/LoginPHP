@@ -22,9 +22,10 @@
 .log_reg_form {
     display: flex;
     flex-direction: column;
-    min-width: 435px;
+    min-width: 550px;
     text-align: center;
-    padding: 60px 65px;
+    padding: 50px 65px;
+    margin: 30px;
     color: white;
     border-radius: 10px;
     box-shadow: 0 0px 2px grey;
@@ -35,7 +36,10 @@
 .log_reg_label {
     text-align: justify;
     color: black;
-    font-size: 0.7rem;
+}
+
+.log_reg_lab_inp {
+    font-size: 1rem;
 }
 
 .log_reg_input {
@@ -49,24 +53,36 @@
     color: black;
 }
 
+.log_reg_input:focus {
+    box-shadow: 0 0 2px 2px rgb(255, 158, 0), inset 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
 .log_reg_shadow {
     box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.25);
     border: none;
+    transition: all 0.3s ease, box-shadow 0.3s ease;
 }
 
 .log_reg_submit {
     background: linear-gradient(90deg, rgba(123, 44, 191, 1) 0%, rgba(245, 141, 156, 1) 50%, rgba(255, 145, 0, 1) 100%);
     border: none;
     line-height: 1;
+    margin: 0;
+    padding: 0;
 }
 
-.log_reg_input,  a {
+.log_reg_input {
     font-size: 0.7rem;
 }
 
-input[type="text"], input[type="password"], button[type="submit"] {
+input[type="text"], input[type="password"], .log_container {
+    font-size: 0.7rem;
+    min-height: 40px;
+}
+
+button[type="submit"] {
     font-size: 1rem;
-    height: 40px;
+    min-height: 50px;
 }
 
 .div_rem_passwd {
@@ -83,12 +99,15 @@ input[type="text"], input[type="password"], button[type="submit"] {
     border-radius: 100%;
     background-color: whitesmoke;
     position: relative;
+    height: 20px;
+    width: 20px;
+    margin: 0;
 }
 
 .log_remember:checked::after {
     content: '✓';
     position: absolute;
-    color: rgb(255, 158, 0);
+    color: rgb(168 104 0);
     font-size: 15px;
     font-weight: bold;
     top: 50%;
@@ -99,8 +118,12 @@ input[type="text"], input[type="password"], button[type="submit"] {
 .forgot_passwd {
     margin-left: auto;
     text-align: right;
-    color: rgb(255, 158, 0);
-    text-decoration-color: rgb(255, 158, 0);
+    color: rgb(168 104 0);
+    text-decoration-color: rgb(168 104 0);
+}
+
+.log_reg_label, .forgot_passwd {
+    font-size: 0.7rem;
 }
 
 .g-recaptcha {
@@ -110,30 +133,52 @@ input[type="text"], input[type="password"], button[type="submit"] {
 
 .log_separation {
     color: black;
+    margin: 5px;
+}
+
+#error-message {
+    color: red;
+    margin: 0;
 }
 
 .log_oauth {
     display: flex;
     flex-direction: column;
     width: 100%;
+    gap: 10px;
 }
 
 .log_container {
-    height: 50px;
-    max-width: 100%;
     display: grid;
-    grid-template-columns: 10% 80% 10%;
-    align-items: center;
-    justify-content: center;
+    grid-template-columns: 20% 60% 20%;
+    max-width: 100%;
+    height: 40px;
+    box-shadow: 0 0 1.5px rgb(0, 0, 0);
+    background-color: transparent;
+    border: none;
+    border-radius: 10px;
+    margin: 0;
+    padding: 0;
 }
 
 .log_oauth_img {
     aspect-ratio: 1 / 1;
-    min-height: 30px;
-    min-width: 30px;
-    max-height: 30px;
-    max-width: 30px;
-    border-radius: 100%;
-    align-items: center;
-    justify-content: center;
+    min-height: 25px;
+    min-width: 25px;
+    max-height: 25px;
+    max-width: 25px;
+    align-self: center;
+    justify-self: center;
+}
+
+.log_oauth_p {
+    color: black;
+    display: flex;
+    align-self: center;
+    justify-self: center;
+    font-size: 0.85rem;
+    margin: 0;
+    padding: 0;
+    align-self: center;
+    justify-self: center;
 }
