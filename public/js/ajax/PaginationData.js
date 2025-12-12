@@ -21,6 +21,7 @@ async function createFilteredFeed(page) {
     params.append("page", page);
 
     const newUrl = "?" + params.toString();
+    console.log(newUrl);
     window.history.pushState({}, '', newUrl);
 
     const response = await fetch("feed?" + params.toString(), {

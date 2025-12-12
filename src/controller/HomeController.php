@@ -14,7 +14,14 @@ class HomeController {
 
     public function showFeed(){
         try {
-            if (empty($_SERVER['HTTP_SEC_FETCH_MODE']) || $_SERVER['HTTP_SEC_FETCH_MODE'] !== 'cors') {
+            // Validar que es una petición AJAX
+            $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 
+                  strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+
+            $acceptsHtml = strpos($_SERVER['HTTP_ACCEPT'] ?? '', 'text/html') !== false;
+            
+            // Si no es AJAX y acepta HTML, es navegación directa
+            if (!$isAjax && $acceptsHtml) {
                 header("Location: " . BASE_URL);
                 exit;
             }
