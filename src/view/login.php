@@ -19,23 +19,26 @@ $showRecaptcha = $_SESSION["login_try"] >= 3;
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <link rel="stylesheet" href="./styles/loginregister.css">
     <script type="module" src="./js/LoginFormData.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap" rel="stylesheet">
 </head>
-<body>
-    <form method="POST" id="loginForm" action="auth/login">
-        <h1>Login</h1>
+<body class="log_reg_back">
+    <form class="log_reg_form" method="POST" id="loginForm" action="auth/login">
+        <h1 class="log_reg_title">Login</h1>
         <div>
-            <label for="email">Email</label>
-            <input name="email" id="email" type="text" placeholder="email@example.com" required>
+            <label class="log_reg_label log_reg_lab_inp" for="email">Email</label>
+            <input class="log_reg_input log_reg_shadow" name="email" id="email" type="text" placeholder="email@example.com" required>
         </div>
 
         <div>
-            <label for="password">Contraseña</label>
-            <input name="password" id="password" type="password" minlength="8" placeholder="Minimum 8 characters" required>
+            <label class="log_reg_label log_reg_lab_inp" for="password">Contraseña</label>
+            <input class="log_reg_input log_reg_shadow" name="password" id="password" type="password" minlength="8" placeholder="Minimum 8 characters" required>
         </div>
-        <div class="rembember div_rem_passwd">
-            <div class="rembember">
-                <input name="remember" id="remember" type="checkbox">
-                <label for="remember">Remember me</label>
+        <div class="div_rem_passwd">
+            <div>
+                <input class="log_remember log_reg_shadow" name="remember" id="remember" type="checkbox">
+                <label class="log_reg_label" for="remember">Remember me</label>
             </div>
             <a class="forgot_passwd" href="login/forgot-password-data">Has olvidado la contraseña?</a>
         </div>
@@ -43,10 +46,29 @@ $showRecaptcha = $_SESSION["login_try"] >= 3;
         <p id="error-message"></p>
 
         <?php if ($showRecaptcha): ?>
-            <div class='g-recaptcha' data-sitekey="<?= $_ENV['RECAPTCHA_SITE_KEY'] ?>"></div>
+            <div class='g-recaptcha' aria-label="recaptcha" data-sitekey="<?= $_ENV['RECAPTCHA_SITE_KEY'] ?>"></div>
         <?php endif; ?>
 
-        <button type="submit">Login</button>
+        <button class="log_reg_submit" type="submit">LOGIN</button>
+
+        <p class="log_separation">- o -</p>
+
+        <div class="log_oauth">
+            <button class="log_container" type="button">
+                <img class="log_oauth_img" src="./assets/google.webp" alt="Google logo">
+                <p class="log_oauth_p">Login with Google</p>
+            </button>
+
+            <button class="log_container" type="button">
+                <img class="log_oauth_img" src="./assets/facebook.webp" alt="Facebook logo">
+                <p class="log_oauth_p">Login with Facebook</p>
+            </button>
+
+            <button class="log_container" type="button">
+                <img class="log_oauth_img" src="./assets/microsoft.webp" alt="Microsoft Logo">
+                <p class="log_oauth_p">Login with Microsoft</p>
+            </button>
+        </div>
     </form>
 </body>
 </html>
