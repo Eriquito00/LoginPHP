@@ -6,12 +6,12 @@
 <script defer src="./js/CreateReco.js"></script>
 <header class="feed_search">
     <div class="header_title">
-        <button class="btn_navigation btn_title" id="btn_navigation"></button>
+        <button class="btn_navigation btn_title" id="btn_navigation" aria-label="home"></button>
         <h1 class="header_h1">PHProgramando</h1>
     </div>
     <div class="header_inputs">
-        <button class="btn_navigation btn_nav" id="btn_navigation"></button>
-        <input class="filter" id="search" type="search" placeholder="Encuentra a tu autor favorito" spellcheck="true">
+        <button class="btn_navigation btn_nav" id="btn_navigation" aria-label="hide-navigation"></button>
+        <input class="filter" id="search" type="search" aria-label="search-bar" placeholder="Encuentra a tu autor favorito" spellcheck="true">
     </div>
     <div class="header_buttons">
         <button id="btnMenuRecoOpen" class="create_button" type="button">Create<img src="./assets/plus.png" alt="Create Recomendation"></button>
