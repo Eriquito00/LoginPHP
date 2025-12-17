@@ -17,22 +17,22 @@ $showRecaptcha = $_SESSION["login_try"] >= 3;
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <link rel="stylesheet" href="./styles/loginregister.css">
 </head>
-<body>
-    <form method="POST" action="register" id="registerForm">
-        <h1>Register</h1>
+<body class="log_reg_back">
+    <form class="log_reg_form" method="POST" action="register" id="registerForm">
+        <h1 class="log_reg_title">Register</h1>
         <div>
-            <label for="email">Email</label>
-            <input name="email" type="email" placeholder="Introduce tu email" required>
+            <label class="log_reg_label log_reg_lab_inp" for="email">Email</label>
+            <input class="log_reg_input log_reg_shadow" name="email" type="email" placeholder="Introduce tu email" required>
         </div>
 
         <div>
-            <label for="email">Contraseña</label>
-            <input name="password" type="password" minlength="8" placeholder="Introduce tu contraseña" required>
+            <label class="log_reg_label log_reg_lab_inp" for="password">Contraseña</label>
+            <input class="log_reg_input log_reg_shadow" name="password" type="password" minlength="8" placeholder="Introduce tu contraseña" required>
         </div>
 
         <div>
-            <label for="email">Repite la contraseña</label>
-            <input name="repeat_password" type="password" placeholder="Repite tu contraseña" minlength="8" required>
+            <label class="log_reg_label log_reg_lab_inp" for="repeat_password">Repite la contraseña</label>
+            <input class="log_reg_input log_reg_shadow" name="repeat_password" type="password" placeholder="Repite tu contraseña" minlength="8" required>
         </div>
 
         <p id="error-message"></p>
@@ -41,7 +41,7 @@ $showRecaptcha = $_SESSION["login_try"] >= 3;
             <div class='g-recaptcha' data-sitekey="<?= $_ENV['RECAPTCHA_SITE_KEY'] ?>"></div>
         <?php endif; ?>
 
-        <button type="submit">Register</button>
+        <button class="log_reg_submit" type="submit">Register</button>
     </form>
 </body>
 </html>
