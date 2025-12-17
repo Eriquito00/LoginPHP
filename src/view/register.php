@@ -25,12 +25,12 @@ if (!isset($_SESSION["register_try"])){
         </div>
 
         <div>
-            <label class="log_reg_label log_reg_lab_inp" for="email">Contraseña</label>
+            <label class="log_reg_label log_reg_lab_inp" for="password">Contraseña</label>
             <input class="log_reg_input log_reg_shadow" name="password" type="password" minlength="8" placeholder="Introduce tu contraseña" required>
         </div>
 
         <div>
-            <label class="log_reg_label log_reg_lab_inp" for="email">Repite la contraseña</label>
+            <label class="log_reg_label log_reg_lab_inp" for="repeat_password">Repite la contraseña</label>
             <input class="log_reg_input log_reg_shadow" name="repeat_password" type="password" placeholder="Repite tu contraseña" minlength="8" required>
         </div>
 
