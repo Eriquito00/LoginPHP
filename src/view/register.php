@@ -1,8 +1,9 @@
 <?php
 session_start();
-if (!isset($_SESSION["register_try"])){
-    $_SESSION["register_try"] = 0;
+if (!isset($_SESSION["login_try"])){
+    $_SESSION["login_try"] = 0;
 }
+$showRecaptcha = $_SESSION["login_try"] >= 3;
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +18,7 @@ if (!isset($_SESSION["register_try"])){
     <link rel="stylesheet" href="./styles/loginregister.css">
 </head>
 <body class="log_reg_back">
-    <form class="log_reg_form" method="POST" action="register">
+    <form class="log_reg_form" method="POST" action="register" id="registerForm">
         <h1 class="log_reg_title">Register</h1>
         <div>
             <label class="log_reg_label log_reg_lab_inp" for="email">Email</label>
@@ -34,7 +35,9 @@ if (!isset($_SESSION["register_try"])){
             <input class="log_reg_input log_reg_shadow" name="repeat_password" type="password" placeholder="Repite tu contraseña" minlength="8" required>
         </div>
 
-        <?php if ($_SESSION["register_try"] >= 3):?>
+        <p id="error-message"></p>
+
+        <?php if ($showRecaptcha): ?>
             <div class='g-recaptcha' data-sitekey="<?= $_ENV['RECAPTCHA_SITE_KEY'] ?>"></div>
         <?php endif; ?>
 
