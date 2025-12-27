@@ -51,6 +51,45 @@ class AuthController {
         ]);
     }
 
+    public function refreshToken() {
+        if (!isset($_COOKIE['refresh_token'])) {
+            http_response_code(401);
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'No refresh token']);
+            exit;
+        }
+
+        try {
+            $refreshToken = $_COOKIE['refresh_token'];
+            $ip = $_SERVER['REMOTE_ADDR'] ?? "0.0.0.0";
+            $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
+            
+            $result = self::$authService->refresh($refreshToken, $ip, $ua);
+            
+            // Actualizar la cookie con el nuevo refresh token
+            $cookieOptions = [
+                'path' => '/',
+                'httponly' => true,
+                'secure' => true,
+                'samesite' => 'Strict',
+                'expires' => $result['refresh_expires']
+            ];
+            setcookie('refresh_token', $result['refresh_token'], $cookieOptions);
+            
+            header('Content-Type: application/json');
+            echo json_encode([
+                'access_token' => $result['access_token'],
+                'expires_in' => $result['access_expires'] - time(),
+                'user_id' => $result['user_id']
+            ]);
+        } catch (Throwable $e) {
+            http_response_code(401);
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Invalid refresh token']);
+            exit;
+        }
+    }
+
     public function getData(){
         session_start();
         $identity = $_POST["email"] ?? null;

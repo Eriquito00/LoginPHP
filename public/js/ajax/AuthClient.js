@@ -18,7 +18,7 @@ export class AuthClient {
             method: 'POST',
             body: formData,
             credentials: 'include'
-        });
+        }); 
 
         if (!response.ok) {
             let errorMessage = `Error ${response.status}`;
@@ -72,7 +72,7 @@ export class AuthClient {
     }
 
     async fetch(url, options = {}) {
-        if (this.tokenExpiry && Date.now >= this.tokenExpiry - 30000) {
+        if (this.tokenExpiry && Date.now() >= this.tokenExpiry - 30000) {
             await this.refreshToken();
         }
 
