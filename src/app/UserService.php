@@ -45,6 +45,10 @@ class UserService {
         if (!$this->checkEmail($email)) throw new InputMismatchError("El email introducido no es valido.");
         if (!$this->checkPassword($password)) throw new InputMismatchError("La contraseña debe contener 8 caracteres, 1 mayuscula, 1 minuscula y 1 numero.");
         if (!$this->checkEqualPassword($password, $repeat_password)) throw new InputMismatchError("Las contraseñas no coinciden.");
+
+        $this->tx(function () use ($email) {
+            if ($this->dao->getByEmail($email)) throw new UserAlreadyExistsException("Email en uso");
+        });
     }
 
     private function checkEmail($email){
