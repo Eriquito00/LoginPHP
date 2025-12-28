@@ -8,6 +8,10 @@ class PublicUser {
         public string $email,
         public string $role
     ) {}
+
+    public function getId(){
+        return $this->id;
+    }
 }
 
 ?>

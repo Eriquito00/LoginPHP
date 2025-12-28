@@ -2,12 +2,11 @@
 
 namespace App\App;
 
+use App\App\Exceptions\LimitExceededException;
 use App\Infraestructure\Database\Connection;
 use App\Infraestructure\Persistence\RecomendationRepositoryPDO;
 use Exception;
-use App\Application\Exceptions\LimitExceededException;
-use App\Application\Exceptions\UserNotExistsException;
-use App\Application\Exceptions\WrongUserIdException;
+use App\App\Exceptions\UserNotExistsException;
 use App\Infraestructure\Persistence\UserRepositoryPDO;
 use App\Model\Entities\CriteriaRecomendation;
 use App\Model\Entities\Pagination;
@@ -25,17 +24,14 @@ class RecomendationService {
     }
 
     public function post($userid, $title, $text): void{
-        if (!strlen($title) <= 50 && !strlen($text) <= 2000){
-            $superado = !strlen($title) <= 50 ? "title" : "text";
+        if (strlen($title) > 50 || strlen($text) > 2000){
+            $superado = strlen($title) > 50 ? "title" : "text";
             throw new LimitExceededException("Estas superando el limite de caracteres en $superado.");
         }
 
-        $userid = intval($userid);
-        if ($userid === 0) throw new WrongUserIdException("El id del usuario no es valido.");
+        if (!$this->userdao->get($userid)) throw new UserNotExistsException("No existe ningun usuario con este id.");
 
         $this->tx(function() use ($userid, $title, $text) {
-            if ($this->userdao->get($userid)) throw new UserNotExistsException("No existe ningun usuario con este id.");
-            
             $recomendation = new Recomendation;
             $recomendation->init($userid, $title, $text);
             $this->dao->create($recomendation);

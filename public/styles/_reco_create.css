@@ -65,7 +65,7 @@ input[type="text"], .form_button {
 
 .form_textarea_text {
     resize: none;
-    height: 200px;
+    height: 100px;
 }
 
 body.no-scroll {

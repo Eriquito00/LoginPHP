@@ -21,7 +21,19 @@ class AuthMiddleware
             return;
         }
 
-        $authHeader = $_SERVER["HTTP_AUTHORIZATION"] ?? null;
+        // Buscar el header Authorization en diferentes ubicaciones
+        $authHeader = null;
+        if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+            $authHeader = $_SERVER['HTTP_AUTHORIZATION'];
+        } elseif (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+            $authHeader = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+        } elseif (function_exists('apache_request_headers')) {
+            $headers = apache_request_headers();
+            if (isset($headers['Authorization'])) {
+                $authHeader = $headers['Authorization'];
+            }
+        }
+        
         if (!$authHeader || !preg_match('/^Bearer\s+(.+)$/i', $authHeader, $m)) {
             $this->unauthorized('No access token given for ' . $path . ' token: ' . $authHeader);
         }
@@ -32,7 +44,7 @@ class AuthMiddleware
             try {
                 $payload = $this->tokens->verifyAccessToken($jwt);
             } catch (Throwable $e) {
-                $this->unauthorized('Token invalido');
+                $this->unauthorized('Token invalido: ' . $e->getMessage());
             }
         }
         
@@ -42,8 +54,12 @@ class AuthMiddleware
         }
 
         $user = $this->users->get($userId);
-        if(!$user || !$user->isActive()) {
-            $this->unauthorized('User not available');
+        if(!$user) {
+            $this->unauthorized('User not found');
+        }
+        
+        if(!$user->isActive()) {
+            $this->unauthorized('User not active');
         }
 
         return $user;

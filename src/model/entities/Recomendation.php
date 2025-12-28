@@ -4,6 +4,7 @@ namespace App\Model\Entities;
 class Recomendation {
     private int $id;
     private int $user_id;
+    private string $username;
     private string $title;
     private string $description;
     private string | null $image_url;
@@ -48,7 +49,9 @@ class Recomendation {
         $this->created_at = "";
     }
 
-
+    public function getUsername() : string {
+        return $this->username;
+    }
 
     public function getId() : int  { 
         return $this->id; 
