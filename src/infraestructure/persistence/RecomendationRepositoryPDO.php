@@ -29,7 +29,7 @@ class RecomendationRepositoryPDO implements RecomendationRepo {
 
             $stmt = $pdo->prepare("
                 INSERT INTO recomendations(user_id, title, description)
-                    VALUES(:user_id, :title, :descrition);
+                    VALUES(:user_id, :title, :description);
             ");
 
             // PODRIAMOS DEVOLVER LA ID DEL ULTIMO CREADO
@@ -123,7 +123,12 @@ class RecomendationRepositoryPDO implements RecomendationRepo {
         $pdo = $this->connection->getConnection();
         [$whereSql, $params] = $this->buildWhere($criteria);
 
-        $sqlCount = "SELECT COUNT(*) AS total FROM recomendations r $whereSql;";
+        $sqlCount = "
+            SELECT COUNT(*) AS total 
+            FROM recomendations r 
+            INNER JOIN users u ON r.user_id = u.id
+            $whereSql
+        ";
         
         $stmt = $pdo->prepare($sqlCount);
         $stmt->execute($params);
@@ -138,7 +143,14 @@ class RecomendationRepositoryPDO implements RecomendationRepo {
         }
         $offset = ($criteria->getPage() - 1) * $criteria->getSize();
 
-        $sqlPagination = "SELECT * FROM recomendations r $whereSql ORDER BY {$criteria->getOrden()} {$criteria->getSentido()} LIMIT :page_size OFFSET :offset;";
+        $sqlPagination = "
+            SELECT r.*, u.username 
+            FROM recomendations r
+            INNER JOIN users u ON r.user_id = u.id
+            $whereSql 
+            ORDER BY {$criteria->getOrden()} {$criteria->getSentido()} 
+            LIMIT :page_size OFFSET :offset
+        ";
         
         $paginatedStmt = $pdo->prepare($sqlPagination);
 

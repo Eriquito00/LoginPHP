@@ -1,23 +1,38 @@
-document.getElementById("btnSubmitReco").addEventListener("submit", async (e) => {
+import { auth } from "./AuthClient.js";
+
+document.querySelector(".form_create_reco").addEventListener("submit", async (e) => {
     e.preventDefault();
 
     try {
 
-        const formData = new formData();
-        formData.append("image", document.getElementById("inputImage"));
-        formData.append("title", document.getElementById("title"));
-        formData.append("text", document.getElementById("description"));
+        const formData = new FormData();
+        formData.append("user", document.getElementById("user").value);
+        formData.append("image", document.getElementById("inputImage").files[0]);
+        formData.append("title", document.getElementById("title").value);
+        formData.append("text", document.getElementById("description").value);
 
-        console.log("llega")
 
-        const response = await fetch(document.baseURI + "profile/recomendationdata", {
+        const response = await auth.fetch(document.baseURI + "profile/recomendationdata", {
             method: 'POST',
             body: formData
         });
 
-        console.log("enviado");
+        if (response.ok) {
+            document.getElementById("formMenuReco").style.display = "none";
+            
+            document.getElementById("title").value = "";
+            document.getElementById("description").value = "";
+            document.getElementById("inputImage").value = "";
+            document.getElementById("previewImage").src = "";
+            
+            window.location.reload();
+        } else {
+            console.error("Error al crear la recomendación:", response.status);
+        }
+
     }
     catch(error) {
+        //falta cambiarlo a json
         console.log(error);
     }
 });
