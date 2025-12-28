@@ -13,7 +13,7 @@ if (isset($pageData)) {
         <article class="user_reco">
             <div class="user">
                 <img class="user_img" src="https://ih1.redbubble.net/image.5195043568.7951/st,small,507x507-pad,600x600,f8f8f8.jpg" alt="">
-                <h3 class="user_name">username</h3>
+                <h3 class="user_name"><?= $reco->getUsername(); ?></h3>
             </div>
             <div class="reco">
                 <div class="reco_post">
