@@ -1,3 +1,11 @@
+<?php
+
+use App\Controller\AuthController;
+
+$authService = AuthController::getAuthService();
+$isLogged = $authService ? $authService->isAuthenticated() : false;
+$currentUser = $isLogged ? $authService->getCurrentUser() : null;
+?>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
@@ -14,7 +22,11 @@
         <input class="filter" id="search" type="search" aria-label="search-bar" placeholder="Encuentra a tu autor favorito" spellcheck="true">
     </div>
     <div class="header_buttons">
-        <button id="btnMenuRecoOpen" class="create_button" type="button">Create<img src="./assets/plus.png" alt="Create Recomendation"></button>
+        <?php if ($isLogged): ?>
+            <button id="btnMenuRecoOpen" class="create_button" type="button">Create<img src="./assets/plus.png" alt="Create Recomendation"></button>
+        <?php else: ?>
+            <button id="btnMenuRecoOpen" class="create_button" type="button">Login<img src="./assets/plus.png" alt="Create Recomendation"></button>
+        <?php endif; ?>
         <select id="sentido" class="filter">
             <option value="asc">ASC</option>
             <option value="desc" selected>DESC</option>
