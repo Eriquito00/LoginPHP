@@ -48,7 +48,7 @@ export class AuthClient {
   }
 
   async refreshToken() {
-    const response = await fetch("/auth/refresh", {
+    const response = await fetch(document.baseURI + "auth/refresh", {
       method: "POST",
       credentials: "include",
     });

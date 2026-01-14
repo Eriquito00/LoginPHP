@@ -1,8 +1,11 @@
 <?php
 namespace App\Controller;
 
+use App\App\RecomendationService;
 use App\Helpers\InputImage;
 use App\Infraestructure\Database\Connection;
+use App\Infraestructure\Persistence\RecomendationRepositoryPDO;
+use App\Infraestructure\Persistence\UserRepositoryPDO;
 use Exception;
 
 class RecomendationController {
@@ -21,42 +24,26 @@ class RecomendationController {
     }
 
     public function getData(){
+        $user = $_POST["user"] ?? "";
         $image = $_FILES["image"] ?? null;
         $title = $_POST["title"] ?? "";
         $text = $_POST["text"] ?? "";
 
         try {
-            $urlImage = InputImage::saveImage($image, 1);
+            $connection = Connection::getInstance();
+            $recoServ = new RecomendationService(
+                new RecomendationRepositoryPDO($connection),
+                new UserRepositoryPDO($connection),
+                $connection
+            );
 
-            $connection = new Connection();
-            $pdo = $connection->getConnection();
-
-            $stmt = $pdo->prepare("
-                INSERT INTO recomendations(user_id, title, description, image_url)
-                    VALUES(:user_id, :title, :description, :image_url);
-            ");
-
-            // PODRIAMOS DEVOLVER LA ID DEL ULTIMO CREADO
-
-            $stmt->execute([
-                ':user_id' => 1,
-                ':title' => $title,
-                ':description' => $text,
-                ":image_url" => $urlImage
-            ]);
+            $recoServ->post($user, $title, $text);
         }
         catch (Exception $e) {
             echo $e->getMessage();
         }
 
-        if (!empty($this->recomendationid)){
-            //tirar el update
-        }
-        else {
-            //tirar el insert
-        }
-
-        require_once(__DIR__ . "/../view/profile.php");
+        //require_once(__DIR__ . "/../view/profile.php");
     }
 }
 
