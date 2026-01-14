@@ -6,6 +6,7 @@ use App\Controller\Exceptions\InputMismatchError;
 use App\Helpers\Recaptcha;
 use App\Infraestructure\Database\Connection as DatabaseConnection;
 use App\Infraestructure\Persistence\UserRepositoryPDO;
+use RuntimeException;
 use Throwable;
 
 class RegisterController {
@@ -54,6 +55,16 @@ class RegisterController {
         catch (InputMismatchError $e){
             $_SESSION["register_try"]++;
             http_response_code(400);
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+            exit;
+        }
+        catch (RuntimeException $e){
+            $_SESSION["register_try"]++;
+            http_response_code(409);
             header('Content-Type: application/json');
             echo json_encode([
                 'success' => false,
