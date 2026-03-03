@@ -56,6 +56,8 @@ Router::get("/login", [LoginController::class, "index"]);
 Router::post("/auth/login", [AuthController::class, "getData"]);
 Router::post("/auth/refresh", [AuthController::class, "refreshToken"]);
 
+Router::get("/oauth/github/callback", ["", ""]);
+
 Router::get("/login/forgot-password-data", [LoginController::class, "forgotPasswordData"]);
 Router::post("/login/forgot-password-data", [LoginController::class, "forgotPasswordData"]);
 
