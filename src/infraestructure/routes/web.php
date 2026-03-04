@@ -11,6 +11,7 @@ use App\Controller\ProfileSettingsController;
 use App\Controller\RecomendationController;
 use App\Controller\AdminController;
 use App\Controller\AuthController;
+use App\Controller\OAuth2Controller;
 use App\Infraestructure\Database\Connection;
 use App\Infraestructure\Middleware\AuthMiddleware;
 use App\Infraestructure\Persistence\RefreshTokenRepositoryPDO;
@@ -41,6 +42,8 @@ Router::setAuthMiddleware(
             '/login',
             '/auth/login',
             '/auth/refresh',
+            '/oauth/github/login',
+            '/oauth/github/callback',
             '/register',
             '/feed',
             '/profile/setup'
@@ -56,7 +59,8 @@ Router::get("/login", [LoginController::class, "index"]);
 Router::post("/auth/login", [AuthController::class, "getData"]);
 Router::post("/auth/refresh", [AuthController::class, "refreshToken"]);
 
-Router::get("/oauth/github/callback", ["", ""]);
+Router::post("/oauth/github/login", [OAuth2Controller::class, "oauth2GitHub"]);
+Router::get("/oauth/github/callback", [OAuth2Controller::class, "oauth2GitHubCallback"]);
 
 Router::get("/login/forgot-password-data", [LoginController::class, "forgotPasswordData"]);
 Router::post("/login/forgot-password-data", [LoginController::class, "forgotPasswordData"]);
