@@ -4,6 +4,9 @@ namespace App\Controller;
 use App\App\Auth\OAuthGitHubService;
 use App\Infraestructure\Persistence\OAuthUserRepositoryPDO;
 use App\Infraestructure\Database\Connection;
+use App\Infraestructure\Persistence\UserRepositoryPDO;
+use App\Model\Entities\OAuthUser;
+use App\Model\Entities\User;
 use Exception;
 
 class OAuth2Controller {
@@ -27,6 +30,7 @@ class OAuth2Controller {
             session_start();
             if ($state !== ($_SESSION['oauth_state'] ?? null)) throw new Exception("Invalid state");
 
+            //Obtener el Access Token para poder acceder a la info de Github del usuario
             $oauthService = new OAuthGitHubService();
             $tokenRes = $oauthService->changeCodeForToken($code);
 
@@ -40,54 +44,20 @@ class OAuth2Controller {
             $con = Connection::getInstance();
             $oauthUserRepo = new OAuthUserRepositoryPDO($con);
 
+            //Mirar si el usuario existe en la tabla de OAuth
             $oauthAccount = $oauthUserRepo->findOAuthAccount($userData);
 
-            if ($oauthAccount === null) return; //Llamar al metodo que haga el apartado 3
-            else return; //Llamar al metodo que haga todo el 4
+            $userInfo = "";
+            if ($oauthAccount === null) $userInfo = $this->createOAuthUserAccount($con, $userData);
+            else {
+                $oauthUserRepo = new OAuthUserRepositoryPDO($con);
+                $oauthUserRepo->updateOAuthToken($userData);
+                // aqui de alguna forma se podria pillar el id del usuario para hacerle el login que no se si se podria pillar desde oauthAccount o habra que hacer consultillas
+            }
 
-            // Hacer el procedimiento necesario para hacer el 5 y ya
+
 
             /**
-             * Pasos pendientes para completar el flujo OAuth:
-             *
-             * 1. Recibir el DTO (OAuthUser) desde el servicio de GitHub.
-             *    - Pasarlo al repositorio OAuthUserRepository (interfaz).
-             *    - Implementarlo en OAuthUserRepositoryPDO para acceso a base de datos.
-             *
-             * 2. Comprobar si ya existe una cuenta OAuth:
-             *    - Buscar en la tabla oauth_accounts por:
-             *          provider = "github"
-             *          provider_user_id = github_id
-             *
-             * 3. Si la cuenta OAuth ya existe:
-             *    - Obtener el user_id asociado.
-             *    - (Opcional) actualizar el access_token si ha cambiado.
-             *    - Recuperar el usuario y continuar con el login.
-             *
-             * 4. Si la cuenta OAuth NO existe:
-             *    - Comprobar si existe un usuario con el mismo email en la tabla users.
-             *
-             *      4.1 Si el usuario existe:
-             *          - Obtener su user_id.
-             *          - Crear un registro en oauth_accounts con:
-             *                user_id
-             *                provider ("github")
-             *                provider_user_id
-             *                access_token
-             *          - Esto vincula la cuenta OAuth a la cuenta existente.
-             *
-             *      4.2 Si el usuario NO existe:
-             *          - Crear un nuevo usuario usando los datos obtenidos de GitHub:
-             *                username
-             *                email
-             *          - Generar una contraseña aleatoria (solo para cumplir el esquema).
-             *          - Insertar el usuario en la tabla users y obtener el user_id.
-             *          - Insertar el registro en oauth_accounts con:
-             *                user_id
-             *                provider
-             *                provider_user_id
-             *                access_token
-             *
              * 5. Iniciar sesión del usuario en la aplicación:
              *    - Crear la sesión o token interno del sistema.
              *    - El login se ejecuta automáticamente desde backend.
@@ -107,6 +77,58 @@ class OAuth2Controller {
         }
         catch(Exception $e) {
             echo $e->getMessage();
+        }
+    }
+
+    private function loginOAuth(int $userId) {
+        $ip = $_SERVER['REMOTE_ADDR'] ?? "0.0.0.0";
+        $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
+
+        $result = AuthController::getAuthService()->loginByUserId($userId, $ip, $ua);
+
+        $cookieOptions = [
+            'path' => '/',
+            'httponly' => true,
+            'secure' => true,
+            'samesite' => 'Strict',
+            'expires' => $result['refresh_expires']
+        ];
+        setcookie('refresh_token', $result['refresh_token'], $cookieOptions);
+
+        header('Content-Type: application/json');
+        echo json_encode([
+            'access_token' => $result['access_token'],
+            'expires_in' => $result['access_expires'] - time(),
+            'user_id' => $result['user_id']
+        ]);
+    }
+
+    private function createOAuthUserAccount(Connection $con, OAuthUser $newOauthUser) {
+        // Mirar si existe un usuario con ese correo electronico 
+        $userRepo = new UserRepositoryPDO($con);
+        $oauthUserRepo = new OAuthUserRepositoryPDO($con);
+        $user = $userRepo->getByEmail($newOauthUser->getEmail());
+
+        if ($user === null) {
+            $newUser = new User();
+            $newUser->init(
+                null, 
+                $newOauthUser->getUsername(), 
+                $newOauthUser->getEmail(), 
+                1
+            );
+            $newUser->setPassword(bin2hex(random_bytes(16)));
+            $userId = $userRepo->create($newUser);
+
+            $newUser->setId((int) $userId);
+            $newUser->setPassword(bin2hex(random_bytes(16)));
+
+            $oauthUserRepo->createOAuthAccount($newUser, $newOauthUser);
+            return $newUser;
+        }
+        else {
+            $oauthUserRepo->createOAuthAccount($user, $newOauthUser);
+            return $user;
         }
     }
 }
