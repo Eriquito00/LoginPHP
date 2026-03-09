@@ -46,6 +46,25 @@ class AuthService {
         ];
     }
 
+    public function loginByUserId(int $userId, string $ip, string $ua): array {
+        $user = $this->users->get($userId);
+        if (!$user || !$user->isActive()) {
+            throw new UserNotAvailableException("User not available");
+        }
+
+        $access = $this->tokens->issueAccessToken($user);
+        $refresh = $this->tokens->issueRefreshToken($user, $ip, $ua);
+
+        return [
+            'user_id' => $user->getId(),
+            'access_token' => $access->jwt,
+            'access_expires' => $access->exp,
+            'refresh_token' => $refresh->token,
+            'refresh_expires' => $refresh->exp
+        ];
+    }
+
+
     public function isAuthenticated() : bool {
         $refreshToken = $_COOKIE["refresh_token"] ?? null;
 
