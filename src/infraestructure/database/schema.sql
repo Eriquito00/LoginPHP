@@ -49,8 +49,9 @@ CREATE TABLE IF NOT EXISTS oauth_accounts (
     id              BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id         BIGINT NOT NULL,
     provider        VARCHAR(50) NOT NULL,
-    provider_id     INT NOT NULL,
-    access_token    VARCHAR(200) NOT NULL
+    provider_user_id     INT NOT NULL,
+    access_token    VARCHAR(200) NOT NULL,
+    CONSTRAINT fk_oauth_accounts_users FOREIGN KEY (user_id) REFERENCES users(id)
 )
 
 CREATE INDEX IF NOT EXISTS idx_recomendations_user_created
