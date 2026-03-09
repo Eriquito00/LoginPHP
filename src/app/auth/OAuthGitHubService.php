@@ -1,6 +1,9 @@
 <?php
 namespace App\App\Auth;
 
+use App\Model\Entities\OAuthUser;
+use Exception;
+
 class OAuthGitHubService {
     private string $clientId;
     private string $clientSecret;
@@ -58,25 +61,41 @@ class OAuthGitHubService {
         return json_decode($response, true);
     }
 
-    public function getUserData(string $accessToken): array {
+    public function getUserData(string $accessToken) {
+        $userInfo = $this->getGithubUserInfo($_ENV["GITHUB_USER_API"], $_ENV["GITHUB_USERAGENT"], $accessToken);
+        $userResponse = json_decode($userInfo["data"], true);
+        $userStatus = $userInfo["status"];
+
+        $emailsInfo = $this->getGithubUserInfo($_ENV["GITHUB_USER_EMAILS_API"], $_ENV["GITHUB_USERAGENT"], $accessToken);
+        $emailsResponse = json_decode($emailsInfo["data"], true);
+        $emailsStatus = $emailsInfo["status"];
+
+        $email = null;
+        foreach($emailsResponse as $e) {
+            if ($e["primary"] === true) $email = $e["email"];
+        }
+
+        if ($userStatus !== 200) throw new Exception("Failed to fetch user data");
+        if ($emailsStatus !== 200) throw new Exception("Failed to fetch emails");
+
+        return new OAuthUser($userResponse["id"], "github", $userResponse["login"], $email, $accessToken);;
+    }
+
+    private function getGithubUserInfo(string $url, string $user_agent, string $accessToken): array {
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $_ENV["GITHUB_USER_API"]);
+        curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Authorization: Bearer ' . $accessToken,
             'Accept: application/vnd.github.v3+json',
-            'User-Agent: ' . $_ENV["GITHUB_USERAGENT"]
+            'User-Agent: ' . $user_agent
         ]);
 
         $response = curl_exec($ch);
         $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        if ($statusCode !== 200) {
-            return ['error' => 'Failed to fetch user data'];
-        }
-
-        return json_decode($response, true);
+        return ["status" => $statusCode, "data" => $response];
     }
 }
 ?>
