@@ -46,7 +46,7 @@ class RefreshTokenRepositoryPDO implements RefreshTokenRepo{
         $stmt->bindValue(':hash', $hash, PDO::PARAM_STR);
         $stmt->execute();
 
-        $row = $stmt->fetch(PDO::FETCH_OBJ); // NECESITO VER EXACTAMENTE QUE MIERDA DEVUELVE ESTO PLS ERIC TEN CUIDAO Y ME AVISAS
+        $row = $stmt->fetch(PDO::FETCH_OBJ);
 
         return $row ?: null;
 
