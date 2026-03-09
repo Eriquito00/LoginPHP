@@ -33,6 +33,8 @@ class UserRepositoryPDO implements UserRepo {
                 ':role_id' => $user->getRoleId(),
                 ':passwordHash' => $user->getPasswordHash()
             ]);
+
+            return (int) $pdo->lastInsertId();
         } catch (PDOException $e) {
             throw new DBErrorException("Internal Server Error: " . $e->getMessage());
         }
