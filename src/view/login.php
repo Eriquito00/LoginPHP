@@ -55,7 +55,7 @@ $showRecaptcha = $_SESSION["login_try"] >= 3;
         <p class="log_separation">- o -</p>
 
         <div class="log_oauth">
-            <button class="log_container" type="button">
+            <button class="log_container" id="oauth_github" type="button">
                 <img class="log_oauth_img" src="./assets/github.webp" alt="Google logo">
                 <p class="log_oauth_p">Login with GitHub</p>
             </button>
