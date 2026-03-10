@@ -34,7 +34,7 @@ class OAuth2Controller {
             $oauthService = new OAuthGitHubService();
             $tokenRes = $oauthService->changeCodeForToken($code);
 
-            if (isset($tokenRes['error'])) throw new Exception("Failed to exchange code for token");
+            if (isset($tokenRes['error'])) throw new Exception("Failed to exchange code for token: " . $tokenRes["error"]);
 
             $accessToken = $tokenRes['access_token'];
 
@@ -47,33 +47,18 @@ class OAuth2Controller {
             //Mirar si el usuario existe en la tabla de OAuth
             $oauthAccount = $oauthUserRepo->findOAuthAccount($userData);
 
-            $userInfo = "";
-            if ($oauthAccount === null) $userInfo = $this->createOAuthUserAccount($con, $userData);
-            else {
-                $oauthUserRepo = new OAuthUserRepositoryPDO($con);
-                $oauthUserRepo->updateOAuthToken($userData);
-                // aqui de alguna forma se podria pillar el id del usuario para hacerle el login que no se si se podria pillar desde oauthAccount o habra que hacer consultillas
+            if ($oauthAccount === null) {
+                $user = $this->createOAuthUserAccount($con, $userData);
             }
+            else {
+                $oauthUserRepo->updateOAuthToken($userData);
+                $userRepo = new UserRepositoryPDO($con);
+                $user = $userRepo->getByEmail($userData->getEmail());
+            }
+            $this->loginOAuth($user->getId());
 
-
-
-            /**
-             * 5. Iniciar sesión del usuario en la aplicación:
-             *    - Crear la sesión o token interno del sistema.
-             *    - El login se ejecuta automáticamente desde backend.
-             *
-             * 6. Verificar funcionamiento:
-             *    - Login con OAuth para usuarios existentes.
-             *    - Registro automático con OAuth para usuarios nuevos.
-             *    - Vinculación correcta de cuentas existentes por email.
-             *
-             * 7. Flujo OAuth completado.
-             */
-            
-            echo json_encode([
-                'status' => 'success',
-                'github_user' => $userData
-            ]);
+            require_once(__DIR__ . "/../view/home.php");
+            exit;
         }
         catch(Exception $e) {
             echo $e->getMessage();
@@ -94,13 +79,7 @@ class OAuth2Controller {
             'expires' => $result['refresh_expires']
         ];
         setcookie('refresh_token', $result['refresh_token'], $cookieOptions);
-
-        header('Content-Type: application/json');
-        echo json_encode([
-            'access_token' => $result['access_token'],
-            'expires_in' => $result['access_expires'] - time(),
-            'user_id' => $result['user_id']
-        ]);
+        $_COOKIE['refresh_token'] = $result['refresh_token'];
     }
 
     private function createOAuthUserAccount(Connection $con, OAuthUser $newOauthUser) {
