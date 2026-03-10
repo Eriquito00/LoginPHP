@@ -14,6 +14,7 @@ $showRecaptcha = $_SESSION["login_try"] >= 3;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <base href="<?= BASE_URL ?>">
+    <script defer src="./js/ajax/OAuth2.js"></script>
     <?php if ($showRecaptcha): ?>
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <?php endif; ?>
@@ -50,6 +51,15 @@ $showRecaptcha = $_SESSION["login_try"] >= 3;
         <?php endif; ?>
 
         <button class="log_reg_submit" type="submit">Register</button>
+    
+        <p class="log_separation">- o -</p>
+
+        <div class="log_oauth">
+            <button class="log_container" id="oauth_github" type="button">
+                <img class="log_oauth_img" src="./assets/github.webp" alt="Google logo">
+                <p class="log_oauth_p">Login with GitHub</p>
+            </button>
+        </div>
     </form>
 </body>
 

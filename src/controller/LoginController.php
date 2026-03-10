@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller;
 
-use App\Helpers\Recaptcha;
-
 class LoginController {
     public function index(){
         require_once(__DIR__ . "/../view/login.php");

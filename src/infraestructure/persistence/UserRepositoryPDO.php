@@ -20,7 +20,7 @@ class UserRepositoryPDO implements UserRepo {
      * Funcion para insertar un usuario a la db
      * @param User $user
      */
-    public function create($user) {
+    public function create($user): int {
         try {
             $pdo = $this->connection->getConnection();
             $stmt = $pdo->prepare('
@@ -33,6 +33,8 @@ class UserRepositoryPDO implements UserRepo {
                 ':role_id' => $user->getRoleId(),
                 ':passwordHash' => $user->getPasswordHash()
             ]);
+
+            return (int) $pdo->lastInsertId();
         } catch (PDOException $e) {
             throw new DBErrorException("Internal Server Error: " . $e->getMessage());
         }

@@ -13,16 +13,16 @@ CREATE TABLE IF NOT EXISTS users (
     role_id         INT NOT NULL,
     password_hash   VARCHAR(255) NOT NULL,
     created_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-    last_login_at TIMESTAMP NULL DEFAULT NULL,
-    is_active TINYINT(1) NOT NULL DEFAULT 1,
+    updated_at      TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    last_login_at   TIMESTAMP NULL DEFAULT NULL,
+    is_active       TINYINT(1) NOT NULL DEFAULT 1,
     CONSTRAINT uk_users_email UNIQUE (email),
     CONSTRAINT uk_users_username UNIQUE (username),
     CONSTRAINT fk_users_roles FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
 CREATE TABLE IF NOT EXISTS recomendations (
-    id    BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id                  BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id             BIGINT NOT NULL,
     title               VARCHAR(50) NOT NULL,
     description         TEXT NOT NULL,
@@ -45,5 +45,14 @@ CREATE TABLE IF NOT EXISTS refresh_tokens (
     INDEX idx_rt_valid (user_id, revoked_at, expires_at)
 );
 
-CREATE INDEX idx_recomendations_user_created
+CREATE TABLE IF NOT EXISTS oauth_accounts (
+    id              BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id         BIGINT NOT NULL,
+    provider        VARCHAR(50) NOT NULL,
+    provider_user_id     INT NOT NULL,
+    access_token    VARCHAR(200) NOT NULL,
+    CONSTRAINT fk_oauth_accounts_users FOREIGN KEY (user_id) REFERENCES users(id)
+)
+
+CREATE INDEX IF NOT EXISTS idx_recomendations_user_created
   ON recomendations (user_id, created_at DESC, id);
