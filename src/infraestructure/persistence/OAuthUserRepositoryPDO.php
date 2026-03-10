@@ -17,12 +17,12 @@ class OAuthUserRepositoryPDO implements OAuthUserRepo {
     public function findOAuthAccount(OAuthUser $oauthUser): ?object {
         $pdo = $this->con->getConnection();
 
-        $stmt = $pdo->prepare(`
+        $stmt = $pdo->prepare('
             SELECT * 
                 FROM oauth_accounts
             WHERE provider = :provider
             AND provider_user_id = :providerUserId
-        `);
+        ');
 
         $stmt->bindValue(':provider', $oauthUser->getProvider(), PDO::PARAM_STR);
         $stmt->bindValue(':providerUserId', $oauthUser->getProviderUserId(), PDO::PARAM_STR);
@@ -30,16 +30,16 @@ class OAuthUserRepositoryPDO implements OAuthUserRepo {
 
         $row = $stmt->fetch(PDO::FETCH_OBJ);
 
-        return $row ?? null;
+        return $row === false ? null : $row;
     }
 
     public function createOAuthAccount(User $user, OAuthUser $oauthUser) {
         $pdo = $this->con->getConnection();
 
-        $stmt = $pdo->prepare(`
+        $stmt = $pdo->prepare('
             INSERT INTO oauth_accounts (user_id, provider, provider_user_id, access_token)
             VALUES (:userId, :provider, :providerUserId, :accessToken)
-        `);
+        ');
 
         $stmt->bindValue(':userId', $user->getId(), PDO::PARAM_STR);
         $stmt->bindValue(':provider', $oauthUser->getProvider(), PDO::PARAM_STR);
@@ -51,12 +51,12 @@ class OAuthUserRepositoryPDO implements OAuthUserRepo {
     public function updateOAuthToken(OAuthUser $oauthUser) {
         $pdo = $this->con->getConnection();
 
-        $stmt = $pdo->prepare(`
+        $stmt = $pdo->prepare('
             UPDATE oauth_accounts
                 SET access_token = :access_token
             WHERE provider = :provider
             AND provider_user_id = :providerUserId
-        `);
+        ');
 
         $stmt->bindValue(':access_token', $oauthUser->getAcccess_Token(), PDO::PARAM_STR);
         $stmt->bindValue(':provider', $oauthUser->getProvider(), PDO::PARAM_STR);
