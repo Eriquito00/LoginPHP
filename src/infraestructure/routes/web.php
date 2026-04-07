@@ -11,6 +11,7 @@ use App\Controller\ProfileSettingsController;
 use App\Controller\RecomendationController;
 use App\Controller\AdminController;
 use App\Controller\AuthController;
+use App\Controller\AnimeController;
 use App\Controller\OAuth2Controller;
 use App\Infraestructure\Database\Connection;
 use App\Infraestructure\Middleware\AuthMiddleware;
@@ -18,15 +19,15 @@ use App\Infraestructure\Persistence\RefreshTokenRepositoryPDO;
 use App\Infraestructure\Persistence\UserRepositoryPDO;
 
 $tokenManager = new TokenManager(
-                iss: $_ENV['JWT_ISS'],
-                aud: $_ENV['JWT_AUD'],
-                encrypAlg: $_ENV['JWT_ALG'],           // "HS256"
-                accessTtl: (int) $_ENV['JWT_ACCESS_TTL'],
-                refreshTtlDays: (int) $_ENV['REFRESH_TTL_DAYS'],
-                persistence: new RefreshTokenRepositoryPDO(Connection::getInstance()),  // tu repo inyectado
-                privateKey: null,                // no se usan en HS256
-                publicKey: null,
-                hsSecret: $_ENV['JWT_SECRET'],
+    iss: $_ENV['JWT_ISS'],
+    aud: $_ENV['JWT_AUD'],
+    encrypAlg: $_ENV['JWT_ALG'],           // "HS256"
+    accessTtl: (int) $_ENV['JWT_ACCESS_TTL'],
+    refreshTtlDays: (int) $_ENV['REFRESH_TTL_DAYS'],
+    persistence: new RefreshTokenRepositoryPDO(Connection::getInstance()),  // tu repo inyectado
+    privateKey: null,                // no se usan en HS256
+    publicKey: null,
+    hsSecret: $_ENV['JWT_SECRET'],
 );
 
 $userRepo = new UserRepositoryPDO(Connection::getInstance());
@@ -36,7 +37,9 @@ $rtRepo = new RefreshTokenRepositoryPDO(Connection::getInstance());
 AuthController::setAuthService(new AuthService($userRepo, $rtRepo, $tokenManager));
 
 Router::setAuthMiddleware(
-    new AuthMiddleware($tokenManager, $userRepo,
+    new AuthMiddleware(
+        $tokenManager,
+        $userRepo,
         [
             // CONFIGURACION DE LAS RUTAS PUBLICAS
             '/login',
@@ -46,7 +49,8 @@ Router::setAuthMiddleware(
             '/oauth/github/callback',
             '/register',
             '/feed',
-            '/profile/setup'
+            '/profile/setup',
+            '/animes'
         ]
     )
 );
@@ -54,6 +58,7 @@ Router::setAuthMiddleware(
 Router::get("/", [HomeController::class, "index"]);
 
 Router::get("/feed", [HomeController::class, "showFeed"]);
+Router::get("/animes/:id", [AnimeController::class, "getById"]);
 
 Router::get("/login", [LoginController::class, "index"]);
 Router::post("/auth/login", [AuthController::class, "getData"]);
@@ -91,5 +96,3 @@ Router::post("/profile/settings", [ProfileSettingsController::class, "getData"])
 
 Router::get("/admin/users", [AdminController::class, "index"]);
 Router::post("/admin/users", [AdminController::class, "getData"]);
-
-?>
