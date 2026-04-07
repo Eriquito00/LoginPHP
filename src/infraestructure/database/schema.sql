@@ -52,7 +52,23 @@ CREATE TABLE IF NOT EXISTS oauth_accounts (
     provider_user_id     INT NOT NULL,
     access_token    VARCHAR(200) NOT NULL,
     CONSTRAINT fk_oauth_accounts_users FOREIGN KEY (user_id) REFERENCES users(id)
-)
+);
+
+CREATE TABLE IF NOT EXISTS animes (
+        id              BIGINT AUTO_INCREMENT PRIMARY KEY,
+        mal_id          BIGINT NOT NULL,
+        title           VARCHAR(255) NOT NULL,
+        image_url       VARCHAR(255) NULL,
+        synopsis        TEXT NULL,
+        score           DECIMAL(4,2) NULL,
+        episodes        INT NULL,
+        created_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at      TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+        CONSTRAINT uk_animes_mal_id UNIQUE (mal_id)
+);
 
 CREATE INDEX IF NOT EXISTS idx_recomendations_user_created
   ON recomendations (user_id, created_at DESC, id);
+
+CREATE INDEX IF NOT EXISTS idx_animes_mal_id
+    ON animes (mal_id);
