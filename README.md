@@ -1,5 +1,8 @@
 # RekkoPHP
 
+> [!NOTE]
+> Este repositorio es un prototipo y una prueba de concepto que sirvió como base para el desarrollo posterior del proyecto. La evolución y versión actual del sistema se encuentra en la organización [Rekko Lists](https://github.com/Rekko-Lists), donde se mantiene el desarrollo activo.
+
 Aplicación web desarrollada en PHP que implementa un sistema completo de autenticación de usuarios junto con una plataforma de recomendaciones de anime.
 
 El proyecto está construido siguiendo una arquitectura MVC propia, utilizando JWT para la gestión de sesiones, OAuth2 con GitHub, control de roles y persistencia mediante MySQL.
