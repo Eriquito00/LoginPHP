@@ -1,0 +1,8 @@
+# Dependencias de Composer
+/vendor/
+
+# Configuración de VS Code
+.vscode/
+
+# Variables de entorno
+.env

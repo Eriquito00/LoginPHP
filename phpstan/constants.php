@@ -1,0 +1,6 @@
+<?php
+# ESTE ARCHIVO ES PARA PHP STAN QUE PILLE LAS CONSTANTES
+
+define('BASE_URL', "");
+define('BASE_PATH', "");
+?>

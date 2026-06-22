@@ -1,0 +1,10 @@
+parameters:
+    level: 5
+    paths:
+        - src
+    # Ignorar constantes globales
+    ignoreErrors:
+        - '#Constant BASE_URL not found#'
+    stubFiles:
+        - phpstan/constants.php
+    
